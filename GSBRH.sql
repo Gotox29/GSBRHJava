@@ -2,7 +2,7 @@
 -- version 4.7.3
 -- https://www.phpmyadmin.net/
 --
--- Hôte : GSBRH
+-- Hôte : slam_gsbjava
 -- Généré le :  mar. 08 mai 2018 à 17:28
 -- Version du serveur :  5.6.39-log
 -- Version de PHP :  7.0.27
@@ -19,10 +19,10 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de données :  `GSBRH`
+-- Base de données :  `slam_gsbjava`
 --
-CREATE DATABASE IF NOT EXISTS `GSBRH` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
-USE `GSBRH`;
+CREATE DATABASE IF NOT EXISTS `slam_gsbjava` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
+USE `slam_gsbjava`;
 
 -- --------------------------------------------------------
 
