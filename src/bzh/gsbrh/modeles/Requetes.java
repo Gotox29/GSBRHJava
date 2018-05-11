@@ -28,14 +28,14 @@ public class Requetes {
 		int flag = 0;
 
 		String data = "";
-		data = data + employe.getId() + "','";
-		data = data + employe.getNom() + "','";
-		data = data + employe.getPrenom() + "','";
-		data = data + employe.getLogin() + "','";
-		data = data + employe.getMotDePasse() + "','";
-		data = data + employe.getAdresse() + "','";
-		data = data + employe.getCodePostal() + "','";
-		data = data + employe.getVille() + "','";
+		data = data + addSlashe(employe.getId()) + "','";
+		data = data + addSlashe(employe.getNom()) + "','";
+		data = data + addSlashe(employe.getPrenom()) + "','";
+		data = data + addSlashe(employe.getLogin()) + "','";
+		data = data + addSlashe(employe.getMotDePasse()) + "','";
+		data = data + addSlashe(employe.getAdresse()) + "','";
+		data = data + addSlashe(employe.getCodePostal()) + "','";
+		data = data + addSlashe(employe.getVille()) + "','";
 		data = data + Date.valueOf(employe.getDateE()) + "','";
 		data = data + (employe.getServiceId()+1) + "'";
 
@@ -222,13 +222,13 @@ public class Requetes {
 
 		String data = "";
 		data = data +"id = '" + employe.getId() + "',";
-		data = data +"nom = '"+ employe.getNom() + "',";
-		data = data +"prenom = '"+ employe.getPrenom() + "',";
-		data = data +"login = '"+ employe.getLogin() + "',";
-		data = data +"mdp = '"+ employe.getMotDePasse() + "',";
-		data = data +"adresse = '"+ employe.getAdresse() + "',";
-		data = data +"cp = '"+ employe.getCodePostal() + "',";
-		data = data +"ville = '"+ employe.getVille() + "',";
+		data = data +"nom = '"+ addSlashe(employe.getNom()) + "',";
+		data = data +"prenom = '"+ addSlashe(employe.getPrenom()) + "',";
+		data = data +"login = '"+ addSlashe(employe.getLogin()) + "',";
+		data = data +"mdp = '"+ addSlashe(employe.getMotDePasse()) + "',";
+		data = data +"adresse = '"+ addSlashe(employe.getAdresse()) + "',";
+		data = data +"cp = '"+ addSlashe(employe.getCodePostal()) + "',";
+		data = data +"ville = '"+ addSlashe(employe.getVille()) + "',";
 		data = data +"dateEmbauche = '"+ Date.valueOf(employe.getDateE()) + "',";
 		if(employe.getDateD().equals("")){
 			data = data +"service_id = '"+ (employe.getServiceId()+1) + "'";
@@ -334,7 +334,7 @@ public class Requetes {
 
         try{
             requete = ConnexionBDD.getInstance().createStatement();
-            sql = "SELECT login, mdp FROM visiteur WHERE login='"+ loginAVerifier +"'";
+            sql = "SELECT login, mdp FROM visiteur WHERE login='"+ addSlashe(loginAVerifier) +"'";
             resultat = requete.executeQuery(sql);
             if(resultat.first()){
                 String aTester = resultat.getString("mdp");
@@ -365,5 +365,13 @@ public class Requetes {
 		}
 		requete = null;
 		resultat = null;
+	}
+	
+	public static String addSlashe(String s){
+		s = s.replaceAll("\\\\", "\\\\\\\\");
+	    s = s.replaceAll("\\n", "\\\\n");
+	    s = s.replaceAll("\\r", "\\\\r");
+	    s = s.replaceAll("\\00", "\\\\0");
+	    return s = s.replaceAll("'", "\\\\'");		
 	}
 }

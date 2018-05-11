@@ -17,6 +17,7 @@ public class ConnexionBDD {
 
 		}catch(SQLException e){
 			e.printStackTrace();
+			System.out.println("Base de donnée non trouvé.");
 		}catch(ClassNotFoundException e){
 			e.printStackTrace();
 		}

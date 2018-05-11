@@ -1,298 +1,231 @@
 package bzh.gsbrh.vues;
 
-import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.Enumeration;
 import java.util.Hashtable;
 
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JFrame;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.SpringLayout;
 
 import bzh.gsbrh.controleurs.Controleur;
-import bzh.gsbrh.controleurs.Langues;
 import bzh.gsbrh.modeles.Employe;
+import bzh.gsbrh.observateurs.Bouton;
+import bzh.gsbrh.observateurs.Fenetre;
+import bzh.gsbrh.observateurs.Observable;
+import bzh.gsbrh.observateurs.Observateur;
 
-public class Formulaire extends JFrame implements ActionListener{
+public class Formulaire extends Fenetre implements Observateur{
 
-	private String titre;
-	private Hashtable <Integer,Champ> lesChamps;
-	private Hashtable<Integer, Hashtable> champs;
+	protected Champ[] champs;
 	private Employe unEmploye;
-	private boolean modifier;
-	public static Controleur cont;
+	private int spaceLab = 70;
+	private int spaceText = 30;
+	private int space = 30;
+	private Dimension dimensionForm = new Dimension(150,20);
+	private int yValide = -30;
+	private int yTitre = 50;
+	private int departChamp = 95; 
+	final private static int _AJOUT = 0;
+	final private static int _MODIF = 1;
 
-	public Formulaire(Controleur controleur, String titre, Employe employe,boolean modifier){
-		this.titre = titre;
-		this.cont = controleur;
+	public Formulaire(String titre, Controleur controleur, Observateur o, Employe employe) {
+		super(titre, controleur, o);
+
 		unEmploye = employe;
-		champs = genererChamps();
-		lesChamps = new Hashtable <Integer,Champ>();
-		this.modifier = modifier;
 		//Définir la taille de la fenêtre.
 		this.setSize(500, 500);
 
 		//Pour une autre position : this.setLocation(x,y);
 		this.setLocationRelativeTo(null);
 
-		//ajout des éléments de la fenêtre
-		this.iniComposants();
-
-		//Définir un titre pour la fenêtre.
-		this.setTitle("Interface : " + titre);
-
 		//La fenêtre ne peut pas être redimensionnée.
-		this.setResizable(true);
+		this.setResizable(false);
 
 		//On peux la fermer
-		this.setDefaultCloseOperation(this.DO_NOTHING_ON_CLOSE);
-
-
+		this.setDefaultCloseOperation(this.EXIT_ON_CLOSE); // DO_NOTHING_ON_CLOSE
+		
+		initComposant();
 	}
 
-	public void iniComposants() {
-		// Panneau principale de la fenêtre 
-		//Set up the content pane.
-		Container contentPane = this.getContentPane();
-		SpringLayout layout = new SpringLayout();
-		contentPane.setLayout(layout);
+	public void initComposant(){
+		contentPane = this.getContentPane();
+		this.contentPane.setLayout(this.layout);
+
+		Bouton retour = FBouton.FactoryBouton(this, FBouton._RETOUR);
+		contentPane.add(retour);
+		layout.putConstraint(SpringLayout.WEST, retour,
+				5,
+				SpringLayout.WEST, contentPane);
+		layout.putConstraint(SpringLayout.NORTH, retour,
+				5,
+				SpringLayout.WEST, contentPane);
 
 		// Creation et ajout des composant au panneau		
 		JLabel intro = new JLabel(titre + " :");
+
 		contentPane.add(intro);
 
 		layout.putConstraint(SpringLayout.WEST, intro,
 				50,
 				SpringLayout.WEST, contentPane);
 		layout.putConstraint(SpringLayout.NORTH, intro,
-				30,
+				yTitre,
 				SpringLayout.NORTH, contentPane);
-
-		int pos = 70; 
-		int spaceLab = 60;
-		int spaceText = 50;
-		int space = 30;
-
-		Champ ligne;
-
-		for(int i = 1; i <= this.champs.size();i++){
-			Hashtable<String, String> elements = champs.get(i);
-			String label = null;
-			String valeur = null;
-			Enumeration<String> keys = elements.keys();
-			JComboBox comp = null;
-			while (keys.hasMoreElements()){
-				label = keys.nextElement();
-
-				valeur = elements.get(label);
-			}
-
-			if(label.substring(0, 4).equals("Serv")){				
-				String[] servList = cont.getServices();
-				comp = new JComboBox(servList);
-				comp.setSelectedIndex(Integer.parseInt(valeur));
-
-				ligne = new Champ(label, valeur, comp);
-				addElement(contentPane, ligne.getComp(), ligne.getLabel(), layout, spaceLab, spaceText, pos);
-
-			}else{
-				ligne = new Champ(label, valeur);
-				addElement(contentPane, ligne.getText(), ligne.getLabel(), layout, spaceLab, spaceText, pos);
-				if(this.modifier && i == 1){
-					ligne.bloquerChamp();
-				}
-			}
-			lesChamps.put(i, ligne);
-			pos += space;
+		Bouton valider = null; 
+		switch(titre){
+		case Fenetre._TITRE_AJOUT:
+			valider = FBouton.FactoryBouton(this, FBouton._AJOUT);
+			break;
+		case Fenetre._TITRE_MODIF:
+			valider = FBouton.FactoryBouton(this, FBouton._MODIF);
+			break;
 		}
-		pos += space;
-		JButton envoyer;
-		if(this.modifier){
-			envoyer = new JButton("Modifier");
-			envoyer.addActionListener(this);
-		}else{
-			envoyer = new JButton("Ajouter");
-			envoyer.addActionListener(this);
-		}
-		JButton annuler = new JButton("Réinitialiser");
-		annuler.addActionListener(this);
+		contentPane.add(valider);
+		layout.putConstraint(SpringLayout.EAST, valider,
+				-20,
+				SpringLayout.HORIZONTAL_CENTER, contentPane);
+		layout.putConstraint(SpringLayout.BASELINE, valider,
+				yValide,
+				SpringLayout.SOUTH, contentPane);
 
-		addBouton(contentPane, annuler, envoyer, layout, spaceLab, spaceText, pos);
-
-		// Ajout d'un bouton retour pour revenir a la liste des employes
-		JButton retour = new JButton("Retour");
-		retour.addActionListener(this);
-		contentPane.add(retour);
-
-		layout.putConstraint(SpringLayout.WEST, retour,
-				5,
-				SpringLayout.WEST, contentPane);
-		layout.putConstraint(SpringLayout.NORTH, retour,
-				3,
-				SpringLayout.NORTH, contentPane);
+		Bouton reinistialise = FBouton.FactoryBouton(this, FBouton._REINIT);
+		contentPane.add(reinistialise);
+		layout.putConstraint(SpringLayout.WEST, reinistialise,
+				60,
+				SpringLayout.HORIZONTAL_CENTER, contentPane);
+		layout.putConstraint(SpringLayout.BASELINE, reinistialise,
+				yValide,
+				SpringLayout.SOUTH, contentPane);
+		genererChamps();
 
 	}
 
-	public void addPane(Container contentPane,Champ ligne, SpringLayout layout, int spaceLab, int spaceText, int pos){
+	public void genererChamps(){
+		champs = new Champ[10];
 
-		contentPane.add(ligne);
+		champs[0] = new Champ(this, "Id :", unEmploye.getId());
+		champs[1] = new Champ(this, "Nom :", unEmploye.getNom());
+		champs[2] = new Champ(this, "Prenom :", unEmploye.getPrenom());
+		champs[3] = new Champ(this, "Login :", unEmploye.getLogin());
+		champs[4] = new Champ(this, "Mot de passe :", unEmploye.getMotDePasse());
+		champs[5] = new Champ(this, "Adresse :", unEmploye.getAdresse());
+		champs[6] = new Champ(this, "Code Postal :", unEmploye.getCodePostal());
+		champs[7] = new Champ(this, "Ville :", unEmploye.getVille());
+		champs[8] = new Champ(this, "Date d'embauche :", unEmploye.getDateE());
+		champs[9] = new Champ(this, "Service :", unEmploye.getServiceId(), getControleur().listeService());
 
-		layout.putConstraint(SpringLayout.WEST, ligne,
-				150,
-				SpringLayout.WEST, contentPane);
-		layout.putConstraint(SpringLayout.NORTH, ligne,
-				pos,
-				SpringLayout.NORTH, contentPane);
+	}
+
+	public void majChamps(){
+
+		champs[0].setValeur(unEmploye.getId());
+		champs[1].setValeur(unEmploye.getNom());
+		champs[2].setValeur(unEmploye.getPrenom());
+		champs[3].setValeur(unEmploye.getLogin());
+		champs[4].setValeur(unEmploye.getMotDePasse());
+		champs[5].setValeur(unEmploye.getAdresse());
+		champs[6].setValeur(unEmploye.getCodePostal());
+		champs[7].setValeur(unEmploye.getVille());
+		champs[8].setValeur(unEmploye.getDateE());
+		champs[9].setValeur(unEmploye.getServiceId());
 
 
 	}
 
-	public void addBouton(Container contentPane,Component text, Component lab, SpringLayout layout, int spaceLab, int spaceText, int pos){
+	@Override
+	public void placementComposant(JComponent label, JComponent zone) {
+		// TODO Auto-generated method stub
+		label.setMaximumSize(dimensionForm);
+		label.setMinimumSize(dimensionForm);
+		label.setPreferredSize(dimensionForm);
 
-		contentPane.add(lab);
+		zone.setMaximumSize(dimensionForm);
+		zone.setMinimumSize(dimensionForm);
+		zone.setPreferredSize(dimensionForm);
 
-		contentPane.add(text);
+		this.add(label);
+		this.add(zone);
 
-		layout.putConstraint(SpringLayout.WEST, lab,
-				150,
-				SpringLayout.WEST, contentPane);
-		layout.putConstraint(SpringLayout.NORTH, lab,
-				pos,
-				SpringLayout.NORTH, contentPane);
-
-		layout.putConstraint(SpringLayout.WEST, text,
-				spaceText,
-				SpringLayout.EAST, lab);
-		layout.putConstraint(SpringLayout.NORTH, text,
-				pos,
-				SpringLayout.NORTH, contentPane);
-	}
-
-	public void addElement(Container contentPane,Component text, Component lab, SpringLayout layout, int spaceLab, int spaceText, int pos){
-		Dimension dimension = new Dimension(150,20);
-		contentPane.add(lab);
-		lab.setMaximumSize(dimension);
-		lab.setMinimumSize(dimension);
-		lab.setPreferredSize(dimension);
-
-		contentPane.add(text);
-
-		layout.putConstraint(SpringLayout.WEST, lab,
+		layout.putConstraint(SpringLayout.WEST, label,
 				spaceLab,
-				SpringLayout.WEST, contentPane);
-		layout.putConstraint(SpringLayout.NORTH, lab,
-				pos,
-				SpringLayout.NORTH, contentPane);
+				SpringLayout.WEST, this);
+		layout.putConstraint(SpringLayout.NORTH, label,
+				departChamp,
+				SpringLayout.NORTH, this);
 
-		layout.putConstraint(SpringLayout.WEST, text,
+		layout.putConstraint(SpringLayout.WEST, zone,
 				spaceText,
-				SpringLayout.EAST, lab);
-		layout.putConstraint(SpringLayout.NORTH, text,
-				pos,
-				SpringLayout.NORTH, contentPane);
-	}
-	public Hashtable <Integer, Hashtable> genererChamps(){
-		Hashtable <Integer, Hashtable> champs = new Hashtable <Integer, Hashtable>();
-
-
-		Employe employe = unEmploye;
-		//	        Hashtable <String, String> ligne = new Hashtable <String, String>();
-		//	        ligne = ;
-		champs.put(1, ajouterALHashtable("Id :", employe.getId()));
-		champs.put(2, ajouterALHashtable("Nom :", employe.getNom()));
-		champs.put(3, ajouterALHashtable("Prenom :", employe.getPrenom()));
-		champs.put(4, ajouterALHashtable("Login :", employe.getLogin()));
-		champs.put(5, ajouterALHashtable("Mot de passe :", employe.getMotDePasse()));
-		champs.put(6, ajouterALHashtable("Adresse :", employe.getAdresse()));
-		champs.put(7, ajouterALHashtable("Code Postal :", employe.getCodePostal()));
-		champs.put(8, ajouterALHashtable("Ville :", employe.getVille()));
-		champs.put(9, ajouterALHashtable("Date d'embauche :", employe.getDateE()));
-		champs.put(10, ajouterALHashtable("Service :", Integer.toString(employe.getServiceId())));
-
-		return champs;
-	}
-
-
-
-	public void uploaderChamps(Employe employe){
-		//Employe employe = unEmploye;
-		lesChamps.get(1).setValeur(employe.getId());
-		lesChamps.get(2).setValeur(employe.getNom());
-		lesChamps.get(3).setValeur(employe.getPrenom());
-		lesChamps.get(4).setValeur(employe.getLogin());
-		lesChamps.get(5).setValeur(employe.getMotDePasse());
-		lesChamps.get(6).setValeur(employe.getAdresse());
-		lesChamps.get(7).setValeur(employe.getCodePostal());
-		lesChamps.get(8).setValeur(employe.getVille());
-		lesChamps.get(9).setValeur(employe.getDateE());
-		lesChamps.get(10).setValeur(Integer.toString(employe.getServiceId()));
-	}
-
-	public Hashtable <String, String> ajouterALHashtable(String text, String value){
-		Hashtable <String, String> ligne = new Hashtable <String, String>();
-		if(value == null){
-			value = "";
-		}
-		ligne.put(text, value);
-		return ligne;
+				SpringLayout.EAST, label);
+		layout.putConstraint(SpringLayout.NORTH, zone,
+				departChamp,
+				SpringLayout.NORTH, this);
+		departChamp += space;
 	}
 
 	public void reinitialiser(){
-		for(int i = 1; i <= lesChamps.size(); i++){
-			lesChamps.get(i).initialiserSaisie();
+		for(Champ unChamp : champs){
+			unChamp.initialiserSaisie();
 		}
 	}
 
-
 	public Employe lireEmploye(){
 		Employe employe = new Employe();
-		employe.setId(lesChamps.get(1).getDansSaisie());
-		employe.setNom(lesChamps.get(2).getDansSaisie());
-		employe.setPrenom(lesChamps.get(3).getDansSaisie());
-		employe.setLogin(lesChamps.get(4).getDansSaisie());
-		employe.setMotDePasse(lesChamps.get(5).getDansSaisie());
-		employe.setAdresse(lesChamps.get(6).getDansSaisie());
-		employe.setCodePostal(lesChamps.get(7).getDansSaisie());
-		employe.setVille(lesChamps.get(8).getDansSaisie());
-		employe.setDateE(lesChamps.get(9).getDansSaisie());
-		employe.setServiceId(Integer.parseInt(lesChamps.get(10).getValeur()));
+		employe.setId(champs[0].getDansSaisie());
+		employe.setNom(champs[1].getDansSaisie());
+		employe.setPrenom(champs[2].getDansSaisie());
+		employe.setLogin(champs[3].getDansSaisie());
+		employe.setMotDePasse(champs[4].getDansSaisie());
+		employe.setAdresse(champs[5].getDansSaisie());
+		employe.setCodePostal(champs[6].getDansSaisie());
+		employe.setVille(champs[7].getDansSaisie());
+		employe.setDateE(champs[8].getDansSaisie());
+		employe.setServiceId(champs[9].getIndex());
 		return employe;
 	}
 
 	@Override
-	public void actionPerformed(ActionEvent event) {
+	public void actualiser(Observable o) {
 		// TODO Auto-generated method stub
-		String action = event.getActionCommand();
-		Employe employe = new Employe(); 
-		switch(action){
-		case "Ajouter":
-			employe = lireEmploye();
-			cont.ajouter(employe);
-			break;
-		case "Modifier":
-			employe = lireEmploye();
-			boolean flag = false;
-
-			flag = cont.modifier(employe);
-			if(flag){
-				uploaderChamps(employe);
+		if(o instanceof BValider){
+			Employe employe = lireEmploye();
+			int retour;
+			switch(titre){
+			case Fenetre._TITRE_AJOUT:
+				retour = getControleur().validerEmploye(employe, _AJOUT);
+				switch(retour){
+				case 0:
+					FMessage.message(FMessage._MESSAGE_A);
+					break;
+				case 1:
+					FMessage.message(FMessage._ERREUR_CH);
+				}
+				break;
+			case Fenetre._TITRE_MODIF:
+				//	On confirme que l'utilisateur souhaite modifier cette employé
+				if(FMessage.message(FMessage._CONFIRM_M) == 0){
+					retour = getControleur().validerEmploye(employe, _MODIF);
+					switch(retour){
+					case 0:
+						FMessage.message(FMessage._MESSAGE_M);
+						unEmploye = employe;
+						majChamps();
+						break;
+					case 1:
+						FMessage.message(FMessage._ERREUR_CH);
+					case 2:
+						FMessage.message(FMessage._ERREUR_MO);
+					}
+					break;
+				}
+				FMessage.message(FMessage._MESSAGE_M);
+				break;
 			}
-
-			break;
-		case "Réinitialiser":
+		}else if(o instanceof BReinitialiser){
 			reinitialiser();
-			break;
-		case "Retour":
-			this.dispose();
-			cont.afficherPrincipale();
-			break;
+		}else if(o instanceof BRetour){
+			notifierObservateur();
 		}
-
 	}
+
 }
