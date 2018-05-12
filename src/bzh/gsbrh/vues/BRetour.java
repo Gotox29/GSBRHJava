@@ -23,4 +23,16 @@ public class BRetour extends Bouton implements ActionListener{
 		// TODO Auto-generated method stub
 		notifierObservateur();
 	}
+
+	@Override
+	public void notifierObservateur(String valeur) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void notifierObservateur(String valeur, int code) {
+		// TODO Auto-generated method stub
+		
+	}
 }

@@ -13,5 +13,9 @@ public interface Observable {
 	// Methode permettant d'avertir tous les observateur d'un changement d'etat
 	public void notifierObservateur();
 	
+	public void notifierObservateur(String valeur);
+	
+	public void notifierObservateur(String valeur, int code);
+	
 	
 }

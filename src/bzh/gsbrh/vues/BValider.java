@@ -13,14 +13,16 @@ public class BValider extends Bouton implements ActionListener{
 
 	public BValider(Observateur o, String titre) {
 		super(o,titre);
-		addActionListener(this);
-		
+		addActionListener(this);		
 		// TODO Auto-generated constructor stub
 	}
+
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
 		notifierObservateur();
 	}
+
+	
 }

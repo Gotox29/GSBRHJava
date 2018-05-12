@@ -1,30 +1,36 @@
 package bzh.gsbrh.observateurs;
 
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import javax.swing.JButton;
 
-public abstract class Bouton extends JButton implements Observable{
+import javax.swing.DefaultCellEditor;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
+import javax.swing.JTextField;
+
+public abstract class EditeurCellule extends DefaultCellEditor implements Observable{
 
 	private ArrayList<Observateur> tabObservateur;
-	final public static String _BOUTON_CONNE = "Se conncter";
-	final public static String _BOUTON_MODIF = "Modifier";
-	final public static String _BOUTON_SUPPR = "Supprimer";
-	final public static String _BOUTON_RETOUR = "Retour";
-	final public static String _BOUTON_REINIT = "Réinitialiser";
-	final public static String _BOUTON_AJOUT = "Ajouter";
-	
-	
-	public Bouton(Observateur o, String titre){
+	public EditeurCellule(JTextField textField) {
+		super(textField);
+		tabObservateur = new ArrayList();
+		// TODO Auto-generated constructor stub
+	}
+
+	public EditeurCellule(JCheckBox checkBox, Observateur o) {
+		super(checkBox);
+		// TODO Auto-generated constructor stub
 		tabObservateur = new ArrayList();
 		ajouterObservateur(o);
-		this.setText(titre);
 	}
-		
+
+	public EditeurCellule(JComboBox comboBox) {
+		super(comboBox);
+		// TODO Auto-generated constructor stub
+	}
 	public void ajouterObservateur(Observateur o){
 		tabObservateur.add(o);
 	}
-	
+
 	// Methode permettant de supprimer/resilier un observateur
 	public void supprimerObservateur(Observateur o){
 		tabObservateur.remove(o);
@@ -36,14 +42,13 @@ public abstract class Bouton extends JButton implements Observable{
 			tabObservateur.get(i).actualiser(this);
 		}
 	}
-	@Override
-	public void notifierObservateur(String valeur) {
-		// TODO Auto-generated method stub
+	// Methode permettant d'avertir tous les observateur lors d'un changement d'etat
+	public void notifierObservateur(String valeur){
 		for(int i = 0; i<tabObservateur.size(); i++){
 			tabObservateur.get(i).actualiser(this, valeur);
+			
 		}
 	}
-
 	@Override
 	public void notifierObservateur(String valeur, int code) {
 		// TODO Auto-generated method stub
@@ -51,6 +56,4 @@ public abstract class Bouton extends JButton implements Observable{
 			tabObservateur.get(i).actualiser(this, valeur, code);
 		}
 	}
-	
-	
 }

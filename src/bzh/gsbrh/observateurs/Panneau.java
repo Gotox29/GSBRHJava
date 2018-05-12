@@ -40,6 +40,12 @@ public abstract class Panneau extends JPanel implements Observateur,Observable {
 			tabObservateur.get(i).actualiser(this);
 		}
 	}
+	
+	@Override
+	public void actualiser(Observable o) {
+		// TODO Auto-generated method stub
+		notifierObservateur();
+	}
 
 
 }

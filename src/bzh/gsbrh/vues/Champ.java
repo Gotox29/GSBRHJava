@@ -18,6 +18,7 @@ import javax.swing.SpringLayout;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
 
+import bzh.gsbrh.observateurs.EditeurCellule;
 import bzh.gsbrh.observateurs.Fenetre;
 import bzh.gsbrh.observateurs.Observable;
 import bzh.gsbrh.observateurs.Observateur;
@@ -25,8 +26,9 @@ import bzh.gsbrh.observateurs.Panneau;
 
 public class Champ extends Panneau {
 
+	public static final int _ID = 4;
 	private JLabel label;
-	private BSaisie saisie;
+	private TSaisie saisie;
 	private JPasswordField pass;
 	private String valeur;
 	private int index;
@@ -45,7 +47,7 @@ public class Champ extends Panneau {
 		this.type = type;
 		switch(type){
 		case _TEXT:
-			this.saisie = new BSaisie(this);
+			this.saisie = new TSaisie(this);
 			placementChamps(this.label, this.saisie);
 			break;
 		case _PASS:
@@ -55,13 +57,13 @@ public class Champ extends Panneau {
 		}
 
 	}
-	public Champ(Observateur o, String label, String valeur){
+	public Champ(Observateur o, String label, String valeur, int type){
 		super(o, layout);
 		this.fenetre = (Fenetre) o;
 		this.label = new JLabel(label);
-		this.saisie = new BSaisie(this,valeur);
+		this.saisie = new TSaisie(this,valeur);
 		this.valeur = valeur;
-
+		this.type = type;
 		placementChamps(this.label, this.saisie);
 
 	}
@@ -106,6 +108,24 @@ public class Champ extends Panneau {
 
 	}
 
+	public void setText(String text){
+		switch(this.type){
+		case _TEXT:
+			this.saisie.setText(text+"");
+		}
+	}
+	
+	public Component getCompo(){
+		switch(this.type){
+		case _TEXT:
+			return this.saisie;
+		case _PASS:
+			return this.pass;
+		case _COMB:
+			return this.box;
+		}
+		return null;		
+	}
 
 	public int getBox(){
 		return this.box.getSelectedIndex();
@@ -140,11 +160,30 @@ public class Champ extends Panneau {
 		}
 	}
 
-	@Override
-	public void actualiser(Observable o) {
-		// TODO Auto-generated method stub
 
+	@Override
+	public void actualiser(Observable o, String valeur) {
+		// TODO Auto-generated method stub
+		
 	}
 
+	@Override
+	public void notifierObservateur(String valeur) {
+		// TODO Auto-generated method stub
+		
+	}
 
+	@Override
+	public void actualiser(Observable o, String valeur, int code) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void notifierObservateur(String valeur, int code) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	
 }

@@ -6,35 +6,35 @@ public class Employe {
 
 	private String id = "";
 
-	private String nom;
+	private String nom= "";
 
-	private String prenom;
+	private String prenom= "";
 
 	private String dateE = "2017-04-16";
 
-	private String adresse;
+	private String adresse= "";
 	
-	private String codePostal;
+	private String codePostal= "";
 	
-	private String ville;
+	private String ville= "";
 
-	private String mail;
+	private String mail= "";
 
 	private Integer telephone;
 
-	private String login;
+	private String login= "";
 
-	private String motDePasse;
+	private String motDePasse= "";
 
 	private Integer serviceId = 0;
 
-	private String dateD;
+	private String dateD= "";
 
 	public Employe() {
 	}
 
 	public String getId() {
-		return id;
+		return secure(id);
 	}
 
 	public void setId(String id) {
@@ -42,7 +42,7 @@ public class Employe {
 	}
 
 	public String getNom() {
-		return nom;
+		return secure(nom);
 	}
 
 	public void setNom(String nom) {
@@ -50,7 +50,7 @@ public class Employe {
 	}
 
 	public String getPrenom() {
-		return prenom;
+		return secure(prenom);
 	}
 
 	public void setPrenom(String prenom) {
@@ -58,7 +58,7 @@ public class Employe {
 	}
 
 	public String getAdresse() {
-		return adresse;
+		return secure(adresse);
 	}
 
 	public void setAdresse(String adresse) {
@@ -66,7 +66,7 @@ public class Employe {
 	}
 
 	public String getMail() {
-		return mail;
+		return secure(mail);
 	}
 
 	public void setMail(String mail) {
@@ -82,7 +82,7 @@ public class Employe {
 	}
 
 	public String getLogin() {
-		return login;
+		return secure(login);
 	}
 
 	public void setLogin(String login) {
@@ -90,7 +90,7 @@ public class Employe {
 	}
 
 	public String getMotDePasse() {
-		return motDePasse;
+		return secure(motDePasse);
 	}
 
 	public void setMotDePasse(String motDePasse) {
@@ -106,7 +106,7 @@ public class Employe {
 	}
 
 	public String getDateE() {
-		return dateE;
+		return secure(dateE);
 	}
 
 	public void setDateE(String date) {
@@ -115,7 +115,7 @@ public class Employe {
 	}
 
 	public String getDateD() {
-		return dateD;
+		return secure(dateD);
 	}
 
 	public void setDateD(String date) {
@@ -126,7 +126,7 @@ public class Employe {
 	}
 
 	public String getCodePostal() {
-		return codePostal;
+		return secure(codePostal);
 	}
 
 	public void setCodePostal(String codePostal) {
@@ -134,12 +134,17 @@ public class Employe {
 	}
 
 	public String getVille() {
-		return ville;
+		return secure(ville);
 	}
 
 	public void setVille(String ville) {
 		this.ville = ville;
 	}
-
+	private String secure(String valeur){
+		System.out.println(valeur);
+		if(valeur.equals(null))
+			valeur = "";
+		return valeur;
+	}
 
 }

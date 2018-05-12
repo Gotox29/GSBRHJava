@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.ParseException;
+import java.util.ArrayList;
 //import java.util.Enumeration;
 import java.util.Hashtable;
 
@@ -14,6 +15,8 @@ import bzh.gsbrh.modeles.ConnexionBDD;
 
 
 public class Requetes {
+	public static final int ID = 0;
+	public static final int LOG = 1;
 	private static ResultSet resultat = null;
 	private static Statement requete = null;
 	/**
@@ -91,9 +94,6 @@ public class Requetes {
 				employe.setServiceId(resultat.getInt("service_id") - 1);
 				employe.setDateD(resultat.getString("dateDepart"));
 			}
-			requete.close();
-			return employe;
-
 		}catch (SQLException e){
 			e.printStackTrace();
 		} catch (ClassNotFoundException e) {
@@ -103,6 +103,39 @@ public class Requetes {
 			close();
 		}
 		return employe;
+	}
+	
+	public static boolean employeExiste(String compar, int option) {
+		boolean flag = false;
+
+		try{
+			Connection conn = ConnexionBDD.getInstance();
+			//  Création d'un objet Statement
+			requete = conn.createStatement();
+			switch(option){
+			case ID:
+			//  L'objet ResultSet contient le résultat de la requête SQL
+				resultat = requete.executeQuery("SELECT * FROM visiteur WHERE id = '" + compar + "';");
+				break;
+			case LOG:
+				//  L'objet ResultSet contient le résultat de la requête SQL
+				resultat = requete.executeQuery("SELECT * FROM visiteur WHERE login = '" + compar + "';");
+				break;
+			}
+			
+			resultat.last();
+			int row = resultat.getRow();
+			if(row > 0)
+				flag = true;
+		}catch (SQLException e){
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally{
+			close();
+		}
+		return flag;
 	}
 
 	public Employe trouverEmploye(String nom, String prenom) {
@@ -129,10 +162,6 @@ public class Requetes {
 			resultat = requete.executeQuery("SELECT * FROM services WHERE service_id = " + service_id + ";");
 			resultat.first();
 			service = resultat.getString("service_libelle");
-
-			requete.close();
-			return service;
-
 		}catch (SQLException e){
 			e.printStackTrace();
 		} catch (ClassNotFoundException e) {
@@ -163,9 +192,6 @@ public class Requetes {
 			resultat = requete.executeQuery("SELECT * FROM services WHERE service_libelle = '" + serviceLib + "';");
 			resultat.first();
 			service = resultat.getString("service_id");
-
-			requete.close();
-			return service;
 
 		}catch (SQLException e){
 			e.printStackTrace();
@@ -266,13 +292,13 @@ public class Requetes {
 	/**
 	 * Methode statique qui retourne tout les employes
 	 * 
-	 * @return HashTable <id, Employe> contient la liste de tout les employés
+	 * @return ArrayList<Employe> contient la liste de tout les employés
 	 * @throws ParseException 
 	 * @throws SQLException 
 	 * @throws ClassNotFoundException 
 	 */
-	public static Object [][] listerEmployer() {
-		Object [][]liste = null;
+	public static ArrayList<Employe> listerEmployer() {
+		ArrayList<Employe>liste = null;
 
 		try{
 			//          Connexion à la base de données
@@ -288,29 +314,27 @@ public class Requetes {
 			resultat.first();
 
 			// Déclaration d'un employé qui va permettre l'ajout des employés
-			Employe employe;
-			liste = new Object[row][12];
+			Employe unEmploye;
+			liste = new ArrayList<Employe>();
 
 
 			//  Boucle qui génère les employés un à un 
 			for(int i = 0;i<row;i++){
-
+				unEmploye = new Employe();
 				//  Ajout de l'employé à la liste des employés
-				liste[i][0] =  resultat.getString("id");
-				liste[i][1] =  resultat.getString("nom");
-				liste[i][2] =  resultat.getString("prenom");
-				liste[i][3] =  resultat.getString("login");
-				liste[i][4] =  resultat.getString("adresse");
-				liste[i][5] =  resultat.getString("cp");
-				liste[i][6] =  resultat.getString("ville");
-				liste[i][7] =  resultat.getString("dateEmbauche");
-				liste[i][8] =  resultat.getString("service_id");
-				if(resultat.getString("dateDepart") == null){
-					liste[i][9] = "";
-				}else{
-					liste[i][9] =  resultat.getString("dateDepart");
-				}
+				unEmploye.setId(resultat.getString("id"));
+				unEmploye.setNom(resultat.getString("nom"));
+				unEmploye.setPrenom(resultat.getString("prenom"));
+				unEmploye.setLogin(resultat.getString("login"));
+				unEmploye.setMotDePasse(resultat.getString("mdp"));
+				unEmploye.setAdresse(resultat.getString("Adresse"));
+				unEmploye.setVille(resultat.getString("ville"));
+				unEmploye.setCodePostal(resultat.getString("cp"));
+				unEmploye.setDateE(resultat.getString("dateEmbauche"));
+				unEmploye.setServiceId(resultat.getInt("service_id"));
+				unEmploye.setDateD(resultat.getString("dateDepart"));
 				resultat.next();
+				liste.add(unEmploye);
 			}
 			
 
