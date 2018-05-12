@@ -1,9 +1,6 @@
 package bzh.gsbrh.vues;
 
-import java.awt.Container;
 import java.awt.Dimension;
-import java.util.Hashtable;
-
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.SpringLayout;
@@ -26,8 +23,11 @@ public class Formulaire extends Fenetre implements Observateur{
 	private int yValide = -30;
 	private int yTitre = 50;
 	private int departChamp = 95; 
-	final private static int _AJOUT = 0;
-	final private static int _MODIF = 1;
+	final public static int _AJOUT = 0;
+	final public static int _MODIF = 1;
+	final public static int _MESSAGE = 0;
+	final public static int _ERREUR_CH = 1;
+	final public static int _ERREUR_MO = 2;
 
 	public Formulaire(String titre, Controleur controleur, Observateur o, Employe employe) {
 		super(titre, controleur, o);
@@ -194,10 +194,10 @@ public class Formulaire extends Fenetre implements Observateur{
 			case Fenetre._TITRE_AJOUT:
 				retour = getControleur().validerEmploye(employe, _AJOUT);
 				switch(retour){
-				case 0:
+				case _MESSAGE:
 					FMessage.message(FMessage._MESSAGE_A);
 					break;
-				case 1:
+				case _ERREUR_CH:
 					FMessage.message(FMessage._ERREUR_CH);
 				}
 				break;
@@ -206,12 +206,12 @@ public class Formulaire extends Fenetre implements Observateur{
 				if(FMessage.message(FMessage._CONFIRM_M) == 0){
 					retour = getControleur().validerEmploye(employe, _MODIF);
 					switch(retour){
-					case 0:
+					case _MESSAGE:
 						FMessage.message(FMessage._MESSAGE_M);
 						unEmploye = employe;
 						majChamps();
 						break;
-					case 1:
+					case _ERREUR_CH:
 						FMessage.message(FMessage._ERREUR_CH);
 					case 2:
 						FMessage.message(FMessage._ERREUR_MO);

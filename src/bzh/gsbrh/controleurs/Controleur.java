@@ -61,21 +61,21 @@ public class Controleur implements Observateur{
 		int service = employe.getServiceId()+1;
 		
 		switch (option){
-		case 0:
+		case Formulaire._AJOUT:
 			if(verifId(id) && verifText(nom) && verifText(prenom) && verifText(login) && verifMdp(mdp) && verifText(adresse) && verifCP(cp) && verifText(ville)){
 				employe.setDateD(null);
 				Requetes.ajouterEmploye(employe);
-				result = 0;
+				result = Formulaire._MESSAGE;
 			}
 			break;
-		case 1:
+		case Formulaire._MODIF:
 			if(verifText(nom) && verifText(prenom) && verifText(login) && verifMdp(mdp) && verifText(adresse) && verifCP(cp) && verifText(ville)){
 				employe.setDateD(null);
 				if(Requetes.modifierEmploye(employe) == 1){
-					result = 0;
+					result = Formulaire._ERREUR_MO;
 				}
 			}else{
-				result = 2;
+				result = Formulaire._ERREUR_CH;
 			}
 			break;
 		}
