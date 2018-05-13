@@ -12,11 +12,11 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 
 import bzh.gsbrh.modeles.ConnexionBDD;
+import bzh.gsbrh.observateurs.Lexique;
 
 
-public class Requetes {
-	public static final int ID = 0;
-	public static final int LOG = 1;
+public class Requetes extends Lexique{
+	
 	private static ResultSet resultat = null;
 	private static Statement requete = null;
 	/**
@@ -53,7 +53,7 @@ public class Requetes {
 			//  Déclaration de la requête
 			String sql = "INSERT INTO visiteur(id, nom, prenom, login, mdp, adresse, cp, ville, dateEmbauche, service_id) VALUES ('"+ data +")";
 
-			System.out.println(sql);
+			//System.out.println(sql);
 
 			flag = requete.executeUpdate(sql);
 

@@ -11,8 +11,8 @@ import bzh.gsbrh.observateurs.Observateur;
 public class BRetour extends Bouton implements ActionListener{
 	
 
-	public BRetour(Observateur o, String titre) {
-		super(o,titre);
+	public BRetour(Observateur o, String titre, int id) {
+		super(o,titre, id);
 		addActionListener(this);
 		
 		// TODO Auto-generated constructor stub
@@ -22,17 +22,7 @@ public class BRetour extends Bouton implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
 		notifierObservateur();
-	}
-
-	@Override
-	public void notifierObservateur(String valeur) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void notifierObservateur(String valeur, int code) {
-		// TODO Auto-generated method stub
+		notifierObservateur(id);
 		
 	}
 }

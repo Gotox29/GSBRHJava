@@ -2,22 +2,13 @@ package bzh.gsbrh.modeles;
 
 import java.util.ArrayList;
 
-public class GestionEmploye {
+import bzh.gsbrh.observateurs.Lexique;
+
+public class GestionEmploye extends Lexique{
 	private ArrayList<Employe> listeEmployes;
 	private Object [][] liste;
 	private String entete[] = {"Code", "Nom", "Prenom", "Login", "Adresse", "Code Postal", "ville", "Date d'embauche", "Service", "Date depart", "", "" };
 	private int nbEmployes = 0;
-	final public static int M_ID = 0;
-	final public static int M_NOM = 1;
-	final public static int M_PRENOM = 2;
-	final public static int M_LOGIN = 3;
-	final public static int M_MDP = 4;
-	final public static int M_ADRESSE = 5;
-	final public static int M_CP = 6;
-	final public static int M_VILLE = 7;
-	final public static int M_DATEE = 8;
-	final public static int M_SERVICEID = 9;
-	final public static int M_DATED = 10;
 
 
 	public GestionEmploye(){

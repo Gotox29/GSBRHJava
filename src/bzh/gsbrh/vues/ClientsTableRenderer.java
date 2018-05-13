@@ -14,6 +14,7 @@ import javax.swing.UIManager;
 
 import bzh.gsbrh.controleurs.Controleur;
 import bzh.gsbrh.observateurs.EditeurCellule;
+import bzh.gsbrh.observateurs.Lexique;
 import bzh.gsbrh.observateurs.Observable;
 import bzh.gsbrh.observateurs.Observateur;
 
@@ -64,13 +65,13 @@ public class ClientsTableRenderer extends EditeurCellule
 		{
 			id = (String) table.getValueAt(row, 0);
 			
-			if(new String(label).equals("Modifier")){
-				notifierObservateur(id,0);
+			if(new String(label).equals(Lexique.BOUTON_MODIF)){
+				notifierObservateur(id,Lexique.LI_MO);
 				
 			}
 			
-			if(new String(label).equals("Supprimer")){
-				notifierObservateur(id,1);
+			if(new String(label).equals(Lexique.BOUTON_SUPPR)){
+				notifierObservateur(id,Lexique.LI_SU);
 			}
 			
 		}

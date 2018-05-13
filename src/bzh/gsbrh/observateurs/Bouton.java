@@ -4,21 +4,19 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import javax.swing.JButton;
 
+import bzh.gsbrh.observateurs.Lexique;
+
 public abstract class Bouton extends JButton implements Observable{
 
 	private ArrayList<Observateur> tabObservateur;
-	final public static String _BOUTON_CONNE = "Se conncter";
-	final public static String _BOUTON_MODIF = "Modifier";
-	final public static String _BOUTON_SUPPR = "Supprimer";
-	final public static String _BOUTON_RETOUR = "Retour";
-	final public static String _BOUTON_REINIT = "Réinitialiser";
-	final public static String _BOUTON_AJOUT = "Ajouter";
+	protected int id = -1;
 	
 	
-	public Bouton(Observateur o, String titre){
+	public Bouton(Observateur o, String titre, int id){
 		tabObservateur = new ArrayList();
 		ajouterObservateur(o);
 		this.setText(titre);
+		this.id = id;
 	}
 		
 	public void ajouterObservateur(Observateur o){
@@ -37,8 +35,14 @@ public abstract class Bouton extends JButton implements Observable{
 		}
 	}
 	@Override
-	public void notifierObservateur(String valeur) {
+	public void notifierObservateur(int id) {
 		// TODO Auto-generated method stub
+		for(int i = 0; i<tabObservateur.size(); i++){
+			tabObservateur.get(i).actualiser(this, id);
+		}
+	}
+	
+	public void notifierObservateur(String valeur){
 		for(int i = 0; i<tabObservateur.size(); i++){
 			tabObservateur.get(i).actualiser(this, valeur);
 		}

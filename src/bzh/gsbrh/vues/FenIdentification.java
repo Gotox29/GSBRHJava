@@ -13,6 +13,7 @@ import bzh.gsbrh.observateurs.Bouton;
 import bzh.gsbrh.observateurs.EditeurCellule;
 import bzh.gsbrh.observateurs.Fenetre;
 import bzh.gsbrh.observateurs.Languages;
+import bzh.gsbrh.observateurs.Lexique;
 import bzh.gsbrh.observateurs.Observable;
 import bzh.gsbrh.observateurs.Observateur;
 
@@ -34,7 +35,7 @@ public class FenIdentification extends Fenetre implements Observateur{
 		contentPane = this.getContentPane();
 		this.contentPane.setLayout(this.layout);
 
-		connect = new BValider(this,Bouton._BOUTON_CONNE);
+		connect = FactBouton.FactoryBouton(this, Lexique.BO_CONNECT);
 
 		layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, connect,
 				0,
@@ -83,30 +84,6 @@ public class FenIdentification extends Fenetre implements Observateur{
 
 	@Override
 	public void placementComposant() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void notifierObservateur(String valeur) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void actualiser(Observable o, String valeur) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void notifierObservateur(String valeur, int code) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void actualiser(Observable o, String valeur, int code) {
 		// TODO Auto-generated method stub
 		
 	}

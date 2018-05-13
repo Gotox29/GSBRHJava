@@ -41,11 +41,48 @@ public abstract class Panneau extends JPanel implements Observateur,Observable {
 		}
 	}
 	
+	public void actualiser(Observable o, String valeur){
+		notifierObservateur(valeur);
+	}
+	
 	@Override
 	public void actualiser(Observable o) {
 		// TODO Auto-generated method stub
 		notifierObservateur();
 	}
+	
+	public void notifierObservateur(String valeur){
+		for(int i = 0; i<tabObservateur.size(); i++){
+			tabObservateur.get(i).actualiser(this, valeur);
+		}
+	}
+	
+	@Override
+	public void actualiser(Observable o, String valeur, int code) {
+		// TODO Auto-generated method stub
+		notifierObservateur(valeur, code);
+	}
 
+	@Override
+	public void notifierObservateur(String valeur, int code) {
+		// TODO Auto-generated method stub
+		for(int i = 0; i<tabObservateur.size(); i++){
+			tabObservateur.get(i).actualiser(this, valeur, code);
+		}
+		
+	}
+	@Override
+	public void actualiser(Observable o, int id) {
+		// TODO Auto-generated method stub
+		notifierObservateur(id);
+	}
+
+	@Override
+	public void notifierObservateur(int id) {
+		// TODO Auto-generated method stub
+		for(int i = 0; i<tabObservateur.size(); i++){
+			tabObservateur.get(i).actualiser(this, id);
+		}
+	}
 
 }

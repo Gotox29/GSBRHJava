@@ -14,17 +14,14 @@ import javax.swing.SpringLayout;
 import bzh.gsbrh.controleurs.Controleur;
 import bzh.gsbrh.modeles.Employe;
 import bzh.gsbrh.vues.FactMessage;
+import bzh.gsbrh.observateurs.Lexique;
 
-public abstract class Fenetre extends JFrame implements Observable, WindowListener{
+public abstract class Fenetre extends JFrame implements Observateur, Observable, WindowListener{
 
 	public Controleur cont;
 	private ArrayList<Observateur> tabObservateur;
 	protected SpringLayout layout = new SpringLayout();
 	public int fermeture = -1;
-	public final static String _TITRE_CONNE = "Connexion utilisateur";
-	public final static String _TITRE_MODIF = "Modifier un employé";
-	public final static String _TITRE_AJOUT = "Ajouter un employé";
-	public final static String _TITRE_LISTE = "Liste des employés";
 	
 	protected Container contentPane;
 	protected String titre;
@@ -41,14 +38,14 @@ public abstract class Fenetre extends JFrame implements Observable, WindowListen
 		this.titre = titre;
 		addWindowListener(this);
 		switch(titre){
-		case _TITRE_CONNE:
+		case Lexique._TITRE_CONNE:
 			setSize(300,160);
 			break;
-		case _TITRE_MODIF:
-		case _TITRE_AJOUT:
+		case Lexique._TITRE_MODIF:
+		case Lexique._TITRE_AJOUT:
 			setSize(500, 500);
 			break;
-		case _TITRE_LISTE:
+		case Lexique._TITRE_LISTE:
 			setSize(1300, 500);
 			break;
 		}
@@ -78,20 +75,41 @@ public abstract class Fenetre extends JFrame implements Observable, WindowListen
 		}
 	}
 	@Override
-	public void notifierObservateur(String valeur) {
+	public void notifierObservateur(int id) {
 		// TODO Auto-generated method stub
 		for(int i = 0; i<tabObservateur.size(); i++){
-			tabObservateur.get(i).actualiser(this,valeur);
+			tabObservateur.get(i).actualiser(this,id);
 		}
 	}
-
-
+	
 	@Override
 	public void notifierObservateur(String valeur, int code) {
 		// TODO Auto-generated method stub
 		for(int i = 0; i<tabObservateur.size(); i++){
 			tabObservateur.get(i).actualiser(this,valeur,code);
 		}
+	}
+	
+	public void notifierObservateur(String valeur){
+		for(int i = 0; i<tabObservateur.size(); i++){
+			tabObservateur.get(i).actualiser(this, valeur);
+		}
+	}
+	
+	public void actualiser(Observable o, String valeur){
+		
+	}
+	
+	@Override
+	public void actualiser(Observable o, int id) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void actualiser(Observable o, String valeur, int code) {
+		// TODO Auto-generated method stub
+		
 	}
 	public void finalize(){
 		this.dispose();

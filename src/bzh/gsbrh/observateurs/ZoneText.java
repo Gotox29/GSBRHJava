@@ -68,6 +68,30 @@ public abstract class ZoneText extends JTextField implements Observable, Documen
 		// TODO Auto-generated method stub
 		notifierObservateur();
 	}
+
+	@Override
+	public void notifierObservateur(String valeur) {
+		// TODO Auto-generated method stub
+		for(int i = 0; i<tabObservateur.size(); i++){
+			tabObservateur.get(i).actualiser(this,valeur);
+		}
+	}
+	
+	@Override
+	public void notifierObservateur(String valeur, int code) {
+		// TODO Auto-generated method stub
+		for(int i = 0; i<tabObservateur.size(); i++){
+			tabObservateur.get(i).actualiser(this,valeur,code);
+		}
+	}
+
+	@Override
+	public void notifierObservateur(int id) {
+		// TODO Auto-generated method stub
+		for(int i = 0; i<tabObservateur.size(); i++){
+			tabObservateur.get(i).actualiser(this,id);
+		}
+	}
 	
 
 }

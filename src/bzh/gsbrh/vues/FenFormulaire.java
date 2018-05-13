@@ -13,11 +13,12 @@ import bzh.gsbrh.modeles.Employe;
 import bzh.gsbrh.observateurs.Bouton;
 import bzh.gsbrh.observateurs.EditeurCellule;
 import bzh.gsbrh.observateurs.Fenetre;
+import bzh.gsbrh.observateurs.Lexique;
 import bzh.gsbrh.observateurs.Observable;
 import bzh.gsbrh.observateurs.Observateur;
 
 public class FenFormulaire extends Fenetre implements Observateur{
-	
+
 	private Bouton reinistialise;
 	private Bouton valider;
 	private JLabel intro;
@@ -30,12 +31,7 @@ public class FenFormulaire extends Fenetre implements Observateur{
 	private Dimension dimensionForm = new Dimension(150,20);
 	private int yValide = -30;
 	private int yTitre = 50;
-	private int departChamp = 95; 
-	final public static int _AJOUT = 0;
-	final public static int _MODIF = 1;
-	final public static int _MESSAGE = 0;
-	final public static int _ERREUR_CH = 1;
-	final public static int _ERREUR_MO = 2;
+	private int departChamp = 95;
 	private int index = 1; 
 
 	public FenFormulaire(String titre, Controleur controleur, Observateur o, Employe employe) {
@@ -65,15 +61,15 @@ public class FenFormulaire extends Fenetre implements Observateur{
 		layout.putConstraint(SpringLayout.NORTH, intro,
 				yTitre,
 				SpringLayout.NORTH, contentPane);
-		
-		
+
+
 		layout.putConstraint(SpringLayout.EAST, valider,
 				-20,
 				SpringLayout.HORIZONTAL_CENTER, contentPane);
 		layout.putConstraint(SpringLayout.BASELINE, valider,
 				yValide,
 				SpringLayout.SOUTH, contentPane);
-		
+
 		layout.putConstraint(SpringLayout.WEST, reinistialise,
 				60,
 				SpringLayout.HORIZONTAL_CENTER, contentPane);
@@ -82,41 +78,41 @@ public class FenFormulaire extends Fenetre implements Observateur{
 				SpringLayout.SOUTH, contentPane);
 
 	}
-	
+
 	public void initComposant(){
 		contentPane = this.getContentPane();
 		this.contentPane.setLayout(this.layout);
 
-		retour = FactBouton.FactoryBouton(this, FactBouton._RETOUR);
-		
+		retour = FactBouton.FactoryBouton(this, Lexique.BO_RETOUR);
+
 		// Creation et ajout des composant au panneau		
 		intro = new JLabel(titre + " :");
-		
+
 		valider = null; 
 		switch(titre){
-		case Fenetre._TITRE_AJOUT:
-			valider = FactBouton.FactoryBouton(this, FactBouton._AJOUT);
+		case Lexique._TITRE_AJOUT:
+			valider = FactBouton.FactoryBouton(this, Lexique.BO_AJOUT);
 			break;
-		case Fenetre._TITRE_MODIF:
-			valider = FactBouton.FactoryBouton(this, FactBouton._MODIF);
+		case Lexique._TITRE_MODIF:
+			valider = FactBouton.FactoryBouton(this, Lexique.BO_MODIF);
 			break;
 		}
 
-		reinistialise = FactBouton.FactoryBouton(this, FactBouton._REINIT);
+		reinistialise = FactBouton.FactoryBouton(this, Lexique.BO_REINIT);
 
 		genererChamps();
 		contentPane.add(intro,index());
 		contentPane.add(valider, index());
 		contentPane.add(reinistialise, index());
 		contentPane.add(retour, index());
-		
+
 		placementComposant();
 	}
 
 	public void genererChamps(){
 		champs = new Champ[10];
 		champs[0] = new Champ(this, "Id :", unEmploye.getId(), Champ._TEXT);
-		if(Fenetre._TITRE_MODIF.equals(titre))
+		if(Lexique._TITRE_MODIF.equals(titre))
 			champs[0].bloquerChamp();
 		champs[1] = new Champ(this, "Nom :", unEmploye.getNom(), Champ._TEXT);
 		champs[2] = new Champ(this, "Prenom :", unEmploye.getPrenom(), Champ._TEXT);
@@ -145,7 +141,7 @@ public class FenFormulaire extends Fenetre implements Observateur{
 
 
 	}
-	
+
 
 	public void placementComposant(JComponent label, JComponent zone) {
 		// TODO Auto-generated method stub
@@ -196,12 +192,16 @@ public class FenFormulaire extends Fenetre implements Observateur{
 		return employe;
 	}
 
+
+
 	@Override
 	public void actualiser(Observable o) {
 		// TODO Auto-generated method stub
-		if(o == champs[0]){ // Gestion du champ ID
-							// Verification de l'existance en base et du respect du format(1 à 4 caractères)
-							// et coloration en fonction du resultat
+
+
+		if(o == champs[0] && !(Lexique._TITRE_MODIF.equals(titre))){ // Gestion du champ ID
+			// Verification de l'existance en base et du respect du format(1 à 4 caractères)
+			// et coloration en fonction du resultat
 			int i = champs[0].getText().length();
 			if(i > 4) i=4;
 			String text = champs[0].getText().substring(0, i);
@@ -224,12 +224,12 @@ public class FenFormulaire extends Fenetre implements Observateur{
 			if(!getControleur().verifLogin(log)){
 				log = getControleur().formaterLog(log);
 				champs[3].setText(log);
-				
+
 			}else{
 				champs[3].setText(log);
 			}
 		}
-		if(o == champs[3]){ 
+		if(o == champs[3] && !champs[3].getText().equals(unEmploye.getLogin())){
 			int i = champs[3].getText().length();
 			String log = champs[3].getText().substring(0, i);
 			if(!getControleur().verifLogin(log)){
@@ -239,31 +239,34 @@ public class FenFormulaire extends Fenetre implements Observateur{
 				champs[3].getCompo().setBackground(Color.GREEN);
 			}
 		}
-		if(o instanceof BValider){
+	}
+
+	public void actualiser(Observable o, int code){
+		if(o instanceof Bouton){
 			Employe employe = lireEmploye();
 			int retour;
-			switch(titre){
-			case Fenetre._TITRE_AJOUT:
-				retour = getControleur().validerEmploye(employe, _AJOUT);
+			switch(code){
+			case Lexique.FO_AJ:
+				retour = getControleur().validerEmploye(employe, Lexique.FO_AJOUT);
 				switch(retour){
-				case _MESSAGE:
+				case Lexique.FO_MESSAGE:
 					FactMessage.message(FactMessage._MESSAGE_A);
 					break;
-				case _ERREUR_CH:
+				case Lexique.FO_ERREUR_CH:
 					FactMessage.message(FactMessage._ERREUR_CH);
 				}
 				break;
-			case Fenetre._TITRE_MODIF:
+			case Lexique.FO_MO:
 				//	On confirme que l'utilisateur souhaite modifier cette employé
 				if(FactMessage.message(FactMessage._CONFIRM_M) == 0){
-					retour = getControleur().validerEmploye(employe, _MODIF);
+					retour = getControleur().validerEmploye(employe, Lexique.FO_MODIF);
 					switch(retour){
-					case _MESSAGE:
+					case Lexique.FO_MESSAGE:
 						FactMessage.message(FactMessage._MESSAGE_M);
 						unEmploye = employe;
 						majChamps();
 						break;
-					case _ERREUR_CH:
+					case Lexique.FO_ERREUR_CH:
 						FactMessage.message(FactMessage._ERREUR_CH);
 					case 2:
 						FactMessage.message(FactMessage._ERREUR_MO);
@@ -272,40 +275,13 @@ public class FenFormulaire extends Fenetre implements Observateur{
 				}
 				FactMessage.message(FactMessage._MESSAGE_M);
 				break;
+			case Lexique.FO_RE:
+				reinitialiser();
+				break;
+			case Lexique.FO_BA:
+				notifierObservateur(Lexique.FO_BA);
+				break;
 			}
-		}else if(o instanceof BReinitialiser){
-			reinitialiser();
-		}else if(o instanceof BRetour){
-			notifierObservateur();
 		}
 	}
-
-	@Override
-	public void notifierObservateur(String valeur) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void actualiser(Observable o, String valeur) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void notifierObservateur(String valeur, int code) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void actualiser(Observable o, String valeur, int code) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	
-
-
-
 }

@@ -16,6 +16,7 @@ import bzh.gsbrh.modeles.GestionEmploye;
 import bzh.gsbrh.observateurs.Bouton;
 import bzh.gsbrh.observateurs.EditeurCellule;
 import bzh.gsbrh.observateurs.Fenetre;
+import bzh.gsbrh.observateurs.Lexique;
 import bzh.gsbrh.observateurs.Observable;
 import bzh.gsbrh.observateurs.Observateur;
 
@@ -47,7 +48,7 @@ public class FenListeEmployes extends Fenetre implements Observateur{
 
 		imIc = new ImageIcon("C:/workspaceBis/GSBRH_OBS/src/bzh.gsbrh.images/index.png");
 		image = new JLabel(imIc);
-		ajouter = FactBouton.FactoryBouton(this, FactBouton._AJOUT);
+		ajouter = FactBouton.FactoryBouton(this, Lexique.BO_AJOUT);
 		info = new JLabel("Informations");
 
 		contentPane.add(info);
@@ -61,8 +62,8 @@ public class FenListeEmployes extends Fenetre implements Observateur{
 		int row = liste.length;
 		for(int i = 0; i < row; i++){
 			int col = liste[i].length;
-			Bouton modifier = FactBouton.FactoryBouton(this, FactBouton._MODIF);
-			Bouton supprimer = FactBouton.FactoryBouton(this, FactBouton._SUPPR);
+			Bouton modifier = FactBouton.FactoryBouton(this, Lexique.BO_MODIF);
+			Bouton supprimer = FactBouton.FactoryBouton(this, Lexique.BO_SUPPR);
 			liste[i][col - 2] = modifier;
 			liste[i][col - 1] = supprimer;
 		}
@@ -99,20 +100,22 @@ public class FenListeEmployes extends Fenetre implements Observateur{
 	@Override
 	public void actualiser(Observable o) {
 		// TODO Auto-generated method stub
-		if(o == ajouter){
-			notifierObservateur("ajouter");
-		}
+		notifierObservateur();
 
+	}
+	public void actualiser(Observable o, int id) {
+		// TODO Auto-generated method stub
+		notifierObservateur(id);
 	}
 	public void actualiser(Observable o, String valeur) {
 		// TODO Auto-generated method stub
-		notifierObservateur(valeur);
 	}
 	@Override
 	public void actualiser(Observable o, String valeur, int code) {
 		if(o instanceof EditeurCellule){
 			notifierObservateur(valeur,code);
 		}
+		System.out.println("ici");
 	}
 
 	@Override

@@ -141,7 +141,6 @@ public class Employe {
 		this.ville = ville;
 	}
 	private String secure(String valeur){
-		System.out.println(valeur);
 		if(valeur.equals(null))
 			valeur = "";
 		return valeur;

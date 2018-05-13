@@ -11,8 +11,8 @@ import bzh.gsbrh.observateurs.Observateur;
 public class BValider extends Bouton implements ActionListener{
 	
 
-	public BValider(Observateur o, String titre) {
-		super(o,titre);
+	public BValider(Observateur o, String titre, int id) {
+		super(o,titre, id);
 		addActionListener(this);		
 		// TODO Auto-generated constructor stub
 	}
@@ -22,6 +22,7 @@ public class BValider extends Bouton implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
 		notifierObservateur();
+		notifierObservateur(id);
 	}
 
 	

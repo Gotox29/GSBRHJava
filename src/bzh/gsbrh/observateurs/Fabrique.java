@@ -1,6 +1,6 @@
 package bzh.gsbrh.observateurs;
 
-public abstract class Fabrique {
+public abstract class Fabrique extends Lexique{
 	final public static int _ERREUR_CH = 1;
 	final public static int _ERREUR_CO = 2;
 	final public static int _ERREUR_MO = 3;

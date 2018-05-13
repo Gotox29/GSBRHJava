@@ -160,30 +160,8 @@ public class Champ extends Panneau {
 		}
 	}
 
+	
 
-	@Override
-	public void actualiser(Observable o, String valeur) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void notifierObservateur(String valeur) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void actualiser(Observable o, String valeur, int code) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void notifierObservateur(String valeur, int code) {
-		// TODO Auto-generated method stub
-		
-	}
 
 	
 }

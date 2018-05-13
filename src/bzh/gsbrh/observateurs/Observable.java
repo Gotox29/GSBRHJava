@@ -1,8 +1,6 @@
 package bzh.gsbrh.observateurs;
 
-import java.util.ArrayList;
-
-public interface Observable {
+public interface Observable{
 
 	// Methode permettant d'ajouter un observateur
 	public void ajouterObservateur(Observateur o);
@@ -12,6 +10,8 @@ public interface Observable {
 	
 	// Methode permettant d'avertir tous les observateur d'un changement d'etat
 	public void notifierObservateur();
+	
+	public void notifierObservateur(int id);
 	
 	public void notifierObservateur(String valeur);
 	

@@ -6,6 +6,7 @@ import bzh.gsbrh.modeles.Employe;
 import bzh.gsbrh.modeles.Requetes;
 import bzh.gsbrh.observateurs.EditeurCellule;
 import bzh.gsbrh.observateurs.Fenetre;
+import bzh.gsbrh.observateurs.Lexique;
 import bzh.gsbrh.observateurs.Observable;
 import bzh.gsbrh.observateurs.Observateur;
 import bzh.gsbrh.vues.FactFenetre;
@@ -17,12 +18,28 @@ public class Controleur implements Observateur{
 	private Fenetre fenetre;
 
 	public Controleur(){
-		//		Employe employe = new Employe();
-		//		this.fenetre = FactoryFenetre.ouvrirFenetre(this, FactoryFenetre._AJOUT, employe);
-		this.fenetre = FactFenetre.ouvrirFenetre(this, FactFenetre._LISTE, null);
+		this.fenetre = FactFenetre.ouvrirFenetre(this, Lexique.FE_IDENT, null);
 		fenetre.setVisible(true);
 	}
-
+	
+	private void appliListe(){
+		this.fenetre.finalize();
+		this.fenetre = FactFenetre.ouvrirFenetre(this, Lexique.FE_LISTE, null);
+		fenetre.setVisible(true);
+	}
+	private void appliAjout(){
+		this.fenetre.finalize();
+		Employe employe = new Employe();
+		this.fenetre = FactFenetre.ouvrirFenetre(this, Lexique.FE_AJOUT, employe);
+		fenetre.setVisible(true);
+	}
+	private void appliModif(String id){
+		this.fenetre.finalize();
+		Employe employe = Requetes.trouverEmploye(id);
+		this.fenetre = FactFenetre.ouvrirFenetre(this, Lexique.FE_MODIF, employe);
+		fenetre.setVisible(true);
+	}
+	
 	@Override
 	public void actualiser(Observable o) {
 		// TODO Auto-generated method stub
@@ -36,7 +53,7 @@ public class Controleur implements Observateur{
 				if(o instanceof FenIdentification){
 					this.fenetre.finalize();
 					Employe employe = new Employe();
-					this.fenetre = FactFenetre.ouvrirFenetre(this, FactFenetre._AJOUT, employe);
+					this.fenetre = FactFenetre.ouvrirFenetre(this, Lexique.FE_LISTE, employe);
 					fenetre.setVisible(true);
 				}else if(o instanceof FenFormulaire){
 					this.fenetre.finalize();
@@ -69,21 +86,21 @@ public class Controleur implements Observateur{
 		int service = employe.getServiceId()+1;
 
 		switch (option){
-		case FenFormulaire._AJOUT:
+		case Lexique.FO_AJOUT:
 			if(verifId(id) && verifText(nom) && verifText(prenom) && verifText(login) && verifMdp(mdp) && verifText(adresse) && verifCP(cp) && verifText(ville)){
 				employe.setDateD(null);
 				Requetes.ajouterEmploye(employe);
-				result = FenFormulaire._MESSAGE;
+				result = Lexique.FO_MESSAGE;
 			}
 			break;
-		case FenFormulaire._MODIF:
+		case Lexique.FO_MODIF:
 			if(verifText(nom) && verifText(prenom) && verifText(login) && verifMdp(mdp) && verifText(adresse) && verifCP(cp) && verifText(ville)){
 				employe.setDateD(null);
 				if(Requetes.modifierEmploye(employe) == 1){
-					result = FenFormulaire._ERREUR_MO;
+					result = Lexique.FO_MESSAGE;
 				}
 			}else{
-				result = FenFormulaire._ERREUR_CH;
+				result = Lexique.FO_ERREUR_CH;
 			}
 			break;
 		}
@@ -93,7 +110,7 @@ public class Controleur implements Observateur{
 	
 	public boolean idExiste(String id) {
 		boolean flag = false;
-		if(Requetes.employeExiste(id, Requetes.ID)){
+		if(Requetes.employeExiste(id, Lexique.ID)){
 			flag = true;
 		}
 		return flag;
@@ -101,7 +118,7 @@ public class Controleur implements Observateur{
 	
 	public boolean logExiste(String log) {
 		boolean flag = false;
-		if(Requetes.employeExiste(log, Requetes.LOG)){
+		if(Requetes.employeExiste(log, Lexique.LOG)){
 			flag = true;
 		}
 		return flag;
@@ -165,13 +182,15 @@ public class Controleur implements Observateur{
 	}
 
 	@Override
-	public void actualiser(Observable o, String valeur) {
+	public void actualiser(Observable o, int id) {
 		// TODO Auto-generated method stub
-		if(o == fenetre){
-			this.fenetre.finalize();
-			Employe employe = new Employe();
-			this.fenetre = FactFenetre.ouvrirFenetre(this, FactFenetre._AJOUT, employe);
-			fenetre.setVisible(true);
+		switch(id){
+		case Lexique.FO_BA:
+			appliListe();
+			break;
+		case Lexique.LI_AJ:
+			appliAjout();
+			
 		}
 	}
 
@@ -180,18 +199,20 @@ public class Controleur implements Observateur{
 		// TODO Auto-generated method stub
 		if(o instanceof FenListeEmployes){
 			switch(code){
-			case 0:
-				// Modification d'un employe
-				this.fenetre.finalize();
-				Employe employe = Requetes.trouverEmploye(valeur);
-				this.fenetre = FactFenetre.ouvrirFenetre(this, FactFenetre._MODIF, employe);
-				fenetre.setVisible(true);
+			case Lexique.LI_MO:
+				appliModif(valeur);
 				break;
-			case 1:
+			case Lexique.LI_SU:
 				// Suppression d'un employe
 				break;
 			}
 		}
+	}
+
+	@Override
+	public void actualiser(Observable o, String valeur) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
