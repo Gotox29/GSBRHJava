@@ -16,13 +16,13 @@ A terme l'application devra permettre :
 Installation de l'application GSBRH_OBS
 ---------------------------------------
 
-* Télécharger le dossier GSBRH_OBS et GSBRH.sql
+* Télécharger les dossiers src, bin et lib ainsi que le script GSBRH.sql
 
-* Placer le dossier GSBRH_OBS dans votre workspace(pour eclypse java)
+* Placer le tout dans un dossier GSBRH_OBS dans votre workspace(pour eclypse java)
 
 * Ouvrir java et créer dans ce même workspace un projet nommer GSBRH_OBS (en environement javaSE-1.8)
 
-* Importer la base de données slam_gsb.sql dans votre serveur SGBDR
+* Importer la base de données GSBRH.sql dans votre serveur SGBDR
 
 * Ouvrir le fichier GSBRH_OBS/src/bzh.gsbrh.modeles/ConnexionBDD.java
 
