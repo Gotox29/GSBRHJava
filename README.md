@@ -16,7 +16,7 @@ A terme l'application devra permettre :
 Installation de l'application GSBRH_OBS
 ---------------------------------------
 
-* Télécharger le dossier GSBRH_OBS et slam_gsb.sql
+* Télécharger le dossier GSBRH_OBS et GSBRH.sql
 
 * Placer le dossier GSBRH_OBS dans votre workspace(pour eclypse java)
 
@@ -28,6 +28,3 @@ Installation de l'application GSBRH_OBS
 
 * Modifier les lignes 9, 10 et 11 pour les faire correspondre avec votre serveur et la base de données importé
 
-* Ouvrir le fichier GSBRH_OBS/src/bzh.gsbrh.observateurs/Lexique.java
-
-* Modifier la ligne 14 pour la faire correspondre à l'emplacement du wordkspace(attention à bien échaper les \ )
