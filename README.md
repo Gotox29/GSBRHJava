@@ -1,7 +1,7 @@
 # Application GSB_RH
 ====================
 
-Autheur : Anthony Nizac
+Autheur : __Anthony Nizac__
 
 Projet Github de l'application (https://github.com/Gotox29/Java "Projet Github")
 
