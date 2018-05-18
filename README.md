@@ -27,3 +27,7 @@ Installation de l'application GSBRH_OBS
 * Ouvrir le fichier GSBRH_OBS/src/bzh.gsbrh.modeles/ConnexionBDD.java
 
 * Modifier les lignes 9, 10 et 11 pour les faire correspondre avec votre serveur et la base de données importé
+
+* Ouvrir le fichier GSBRH_OBS/src/bzh.gsbrh.observateurs/Lexique.java
+
+* Modifier la ligne 14 pour la faire correspondre à l'emplacement du wordkspace(attention à bien échaper les \ )
