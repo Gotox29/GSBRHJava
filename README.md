@@ -3,7 +3,7 @@
 
 Autheur : __Anthony Nizac__
 
-Projet Github de l'application (https://github.com/Gotox29/Java "Projet Github")
+[Projet Github de l'application](https://github.com/Gotox29/Java "Projet Github")
 
 
 Application de gestion de personnel pour le contexte GSB.
