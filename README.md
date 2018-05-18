@@ -1,5 +1,4 @@
 # Application GSB_RH
-====================
 
 Autheur : __Anthony Nizac__
 
