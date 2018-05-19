@@ -1,7 +1,13 @@
 package bzh.gsbrh.observateurs;
 
+import java.util.ArrayList;
+
+import bzh.gsbrh.modeles.Employe;
+import bzh.gsbrh.vues.Champ;
+
 public interface Observable{
 
+	
 	// Methode permettant d'ajouter un observateur
 	public void ajouterObservateur(Observateur o);
 	
@@ -17,5 +23,11 @@ public interface Observable{
 	
 	public void notifierObservateur(String valeur, int code);
 	
+	public void notifierObservateur(int code, Champ[] champs);
 	
+	public void notifierObservateur(int code, Champ champs);
+	
+	public void notifierObservateur(int code, Employe employe);
+
+	public void notifierObservateur(int code, Employe employe, Champ[] champs);
 }

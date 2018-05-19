@@ -1,10 +1,12 @@
 package bzh.gsbrh.vues;
 
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 import bzh.gsbrh.observateurs.Bouton;
+import bzh.gsbrh.observateurs.Lexique;
 import bzh.gsbrh.observateurs.Observable;
 import bzh.gsbrh.observateurs.Observateur;
 
@@ -14,8 +16,8 @@ public class BRetour extends Bouton implements ActionListener{
 	public BRetour(Observateur o, String titre, int id) {
 		super(o,titre, id);
 		addActionListener(this);
-		
-		// TODO Auto-generated constructor stub
+		this.setBackground(Lexique.COLOR_BOUTON_RETOUR);
+		this.setToolTipText(titre);
 	}
 
 	@Override

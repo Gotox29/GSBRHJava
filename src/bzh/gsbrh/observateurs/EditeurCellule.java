@@ -8,14 +8,16 @@ import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JTextField;
 
+import bzh.gsbrh.modeles.Employe;
 import bzh.gsbrh.observateurs.Lexique;
+import bzh.gsbrh.vues.Champ;
 
 public abstract class EditeurCellule extends DefaultCellEditor implements Observable{
 
 	private ArrayList<Observateur> tabObservateur;
 	public EditeurCellule(JTextField textField) {
 		super(textField);
-		tabObservateur = new ArrayList();
+		tabObservateur = new ArrayList<Observateur>();
 		// TODO Auto-generated constructor stub
 	}
 
@@ -66,4 +68,20 @@ public abstract class EditeurCellule extends DefaultCellEditor implements Observ
 			tabObservateur.get(i).actualiser(this, valeur, code);
 		}
 	}
+	public void notifierObservateur(int code, Champ[] champs) {
+		// TODO Auto-generated method stub
+		for(int i = 0; i<tabObservateur.size(); i++){
+			tabObservateur.get(i).actualiser(this,code, champs);
+		}
+	}
+	@Override
+	public void notifierObservateur(int code, Employe employe) {
+		// TODO Auto-generated method stub
+		for(int i = 0; i<tabObservateur.size(); i++){
+			tabObservateur.get(i).actualiser(this,code,employe);
+		}
+	}
+	public void notifierObservateur(int code,Champ champs){}
+	public void notifierObservateur(int code, Employe employe, Champ[] champs){}
+	public void actualiser(Observable o, int code, Employe employe, Champ[] champs){}
 }

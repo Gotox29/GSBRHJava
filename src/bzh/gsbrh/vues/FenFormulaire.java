@@ -3,6 +3,7 @@ package bzh.gsbrh.vues;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.WindowEvent;
+import java.time.LocalDate;
 
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -17,35 +18,88 @@ import bzh.gsbrh.observateurs.Lexique;
 import bzh.gsbrh.observateurs.Observable;
 import bzh.gsbrh.observateurs.Observateur;
 
+/**
+ * 
+ * @author Anthony Nizac
+ *
+ */
 public class FenFormulaire extends Fenetre implements Observateur{
 
-	private Bouton reinistialise;
+	private Bouton reinitialise;
 	private Bouton valider;
 	private JLabel intro;
 	private Bouton retour;
 	protected Champ[] champs;
 	private Employe unEmploye;
-	private int spaceLab = 70;
+	private int spaceLab = 85;
 	private int spaceText = 30;
 	private int space = 30;
-	private Dimension dimensionForm = new Dimension(150,20);
 	private int yValide = -30;
 	private int yTitre = 50;
 	private int departChamp = 95;
-	private int index = 1; 
+	private static Fenetre moi;
 
-	public FenFormulaire(String titre, Controleur controleur, Observateur o, Employe employe) {
-		super(titre, controleur, o);
-
+	/**
+	 * Constructeur privé d'une fenetre de formulaire pour ajouter ou modifier un employé passé en paramètre
+	 * 
+	 * @param titre : Titre du formulaire
+	 * @param o	: Observateur de la fenetre
+	 * @param employe : L'employé à modifier, il sera vide si c'est un nouvel employé
+	 */
+	private FenFormulaire(String titre, Observateur o, Employe employe) {
+		super(titre, o);
 		unEmploye = employe;
-
+		fermeture = 1;
 		initComposant();
 	}
 
-	private int index(){
-		return index++;
+	/**
+	 * Methode singleton pour intancier un formulaire 
+	 * 
+	 * @param titre : titre du formulaire
+	 * @param o : Observateur de la fenêtre
+	 * @param employe : L'employé à modifier, il sera vide si c'est un nouvel employé
+	 * @return l'unique instance de la fenetre
+	 */
+	public static Fenetre creerFenetre(String titre, Observateur o, Employe employe){
+		if(moi == null)
+			moi = new FenFormulaire(titre, o, employe);
+		return moi;
 	}
-	@Override
+
+	/**
+	 * Methode qui modifie les informations du formulaire : son titre et l'employé à modifier
+	 * 
+	 * Un switch test le titre, si il s'agit d'une modification on verrouille le champ date d'embauche
+	 * sinon il le dévérouille, 
+	 * 
+	 * @param employe : L'employe à modifier, il sera vide si c'ets un nouvel employé
+	 * @para titre : titre du formulaire
+	 */
+	public void setForm(Employe employe, String titre){
+		this.titre = titre;
+		setTitle(Lexique.APPLI_TITRE + titre);
+		unEmploye = employe;
+		majChamps();
+		reinitialiser();
+		switch(titre){
+		case Lexique.FE_TITRE_AJOUT:
+			valider.setText(Lexique.BOUTON_AJOUT);
+			valider.setId(Lexique.FO_AJ);
+			champs[10].deBloquerChamp();
+			break;
+		case Lexique.FE_TITRE_MODIF:
+			valider.setText(Lexique.BOUTON_MODIF);
+			valider.setId(Lexique.FO_MO);
+			champs[10].bloquerChamp();
+			break;
+		}
+		valider.setIcon(Lexique.ICONVALI);
+	}
+
+	/**
+	 * 
+	 */
 	public void placementComposant() {
 		// TODO Auto-generated method stub
 		layout.putConstraint(SpringLayout.WEST, retour,
@@ -54,6 +108,13 @@ public class FenFormulaire extends Fenetre implements Observateur{
 		layout.putConstraint(SpringLayout.NORTH, retour,
 				5,
 				SpringLayout.WEST, contentPane);
+
+		layout.putConstraint(SpringLayout.EAST, image,
+				-10,
+				SpringLayout.EAST, contentPane);
+		layout.putConstraint(SpringLayout.NORTH, image,
+				10,
+				SpringLayout.NORTH, contentPane);
 
 		layout.putConstraint(SpringLayout.WEST, intro,
 				50,
@@ -70,64 +131,81 @@ public class FenFormulaire extends Fenetre implements Observateur{
 				yValide,
 				SpringLayout.SOUTH, contentPane);
 
-		layout.putConstraint(SpringLayout.WEST, reinistialise,
+		layout.putConstraint(SpringLayout.WEST, reinitialise,
 				60,
 				SpringLayout.HORIZONTAL_CENTER, contentPane);
-		layout.putConstraint(SpringLayout.BASELINE, reinistialise,
+		layout.putConstraint(SpringLayout.BASELINE, reinitialise,
 				yValide,
 				SpringLayout.SOUTH, contentPane);
 
 	}
 
+	/**
+	 * 
+	 */
 	public void initComposant(){
 		contentPane = this.getContentPane();
 		this.contentPane.setLayout(this.layout);
 
-		retour = FactBouton.FactoryBouton(this, Lexique.BO_RETOUR);
+		contentPane.setBackground(Lexique.COLOR_BACKGROUNG);
 
+		retour = FactBouton.FactoryBouton(this, Lexique.BO_RETOUR);
+		retour.setIcon(Lexique.ICONRETOUR);
 		// Creation et ajout des composant au panneau		
 		intro = new JLabel(titre + " :");
 
+
 		valider = null; 
 		switch(titre){
-		case Lexique._TITRE_AJOUT:
+		case Lexique.FE_TITRE_AJOUT:
 			valider = FactBouton.FactoryBouton(this, Lexique.BO_AJOUT);
 			break;
-		case Lexique._TITRE_MODIF:
+		case Lexique.FE_TITRE_MODIF:
 			valider = FactBouton.FactoryBouton(this, Lexique.BO_MODIF);
 			break;
 		}
 
-		reinistialise = FactBouton.FactoryBouton(this, Lexique.BO_REINIT);
+		reinitialise = FactBouton.FactoryBouton(this, Lexique.BO_REINIT);
+		reinitialise.setIcon(Lexique.ICONREIN);
 
 		genererChamps();
-		contentPane.add(intro,index());
-		contentPane.add(valider, index());
-		contentPane.add(reinistialise, index());
-		contentPane.add(retour, index());
+		contentPane.add(intro);
+		contentPane.add(image);
+		contentPane.add(valider);
+		contentPane.add(reinitialise);
+		contentPane.add(retour);
 
 		placementComposant();
 	}
 
+	/**
+	 * 
+	 */
 	public void genererChamps(){
-		champs = new Champ[10];
-		champs[0] = new Champ(this, "Id :", unEmploye.getId(), Champ._TEXT);
-		if(Lexique._TITRE_MODIF.equals(titre))
-			champs[0].bloquerChamp();
-		champs[1] = new Champ(this, "Nom :", unEmploye.getNom(), Champ._TEXT);
-		champs[2] = new Champ(this, "Prenom :", unEmploye.getPrenom(), Champ._TEXT);
-		champs[3] = new Champ(this, "Login :", unEmploye.getLogin(), Champ._TEXT);
-		champs[4] = new Champ(this, "Mot de passe :", unEmploye.getMotDePasse(), Champ._TEXT);
-		champs[5] = new Champ(this, "Adresse :", unEmploye.getAdresse(), Champ._TEXT);
-		champs[6] = new Champ(this, "Code Postal :", unEmploye.getCodePostal(), Champ._TEXT);
-		champs[7] = new Champ(this, "Ville :", unEmploye.getVille(), Champ._TEXT);
-		champs[8] = new Champ(this, "Date d'embauche :", unEmploye.getDateE(), Champ._TEXT);
-		champs[9] = new Champ(this, "Service :", unEmploye.getServiceId(), getControleur().listeService());
+		champs = new Champ[12];
 
+		champs[0] = new ChampID(this, Lexique.ID, "");
+		champs[0].bloquerChamp();
+		champs[1] = new Champ(this, Lexique.NOM, unEmploye.getNom(), Lexique.CHAMP_TEXT);
+		champs[2] = new Champ(this, Lexique.PRENOM, unEmploye.getPrenom(), Lexique.CHAMP_TEXT);
+		champs[3] = new Champ(this, Lexique.LOGIN, unEmploye.getLogin(), Lexique.CHAMP_TEXT);
+		champs[4] = new ChampPass(this,Lexique.MDP,unEmploye.getMotDePasse(), true);
+		champs[5] = new Champ(this, Lexique.ADR, unEmploye.getAdresse(), Lexique.CHAMP_TEXT);
+		champs[6] = new Champ(this, Lexique.CP, unEmploye.getCodePostal(), Lexique.CHAMP_CP);
+		if(unEmploye.getDateE() == null)
+			unEmploye.setDateE(LocalDate.now().toString());
+		champs[7] = new Champ(this, Lexique.VILLE, unEmploye.getVille(), Lexique.CHAMP_TEXT);
+		champs[8] = new Champ(this, Lexique.MAIL, unEmploye.getMail(), Lexique.CHAMP_TEXT);
+		champs[9] = new Champ(this, Lexique.TEL, unEmploye.getTelephone(), Lexique.CHAMP_TEL);
+		champs[10] = new ChampDate(this, "Date d'embauche :", unEmploye.getDateE());
+		champs[11] = new Champ(this, Lexique.SERVICE, unEmploye.getServiceId(), Lexique.CHAMP_COMB);
+		this.notifierObservateur(Lexique.FO_ATTRCOMB, champs[11]);
 	}
 
+	/**
+	 * 
+	 */
 	public void majChamps(){
-
 		champs[0].setValeur(unEmploye.getId());
 		champs[1].setValeur(unEmploye.getNom());
 		champs[2].setValeur(unEmploye.getPrenom());
@@ -136,25 +214,19 @@ public class FenFormulaire extends Fenetre implements Observateur{
 		champs[5].setValeur(unEmploye.getAdresse());
 		champs[6].setValeur(unEmploye.getCodePostal());
 		champs[7].setValeur(unEmploye.getVille());
-		champs[8].setValeur(unEmploye.getDateE());
-		champs[9].setValeur(unEmploye.getServiceId());
-
-
+		champs[8].setValeur(unEmploye.getMail());
+		champs[9].setValeur(unEmploye.getTelephone());
+		champs[10].setValeur(unEmploye.getDateE());
+		champs[11].setValeur(unEmploye.getServiceId());
 	}
 
-
+	/**
+	 * 
+	 */
 	public void placementComposant(JComponent label, JComponent zone) {
 		// TODO Auto-generated method stub
-		label.setMaximumSize(dimensionForm);
-		label.setMinimumSize(dimensionForm);
-		label.setPreferredSize(dimensionForm);
-
-		zone.setMaximumSize(dimensionForm);
-		zone.setMinimumSize(dimensionForm);
-		zone.setPreferredSize(dimensionForm);
-
 		this.add(label);
-		this.add(zone, index());
+		this.add(zone);
 		layout.putConstraint(SpringLayout.WEST, label,
 				spaceLab,
 				SpringLayout.WEST, this);
@@ -168,120 +240,136 @@ public class FenFormulaire extends Fenetre implements Observateur{
 		layout.putConstraint(SpringLayout.NORTH, zone,
 				departChamp,
 				SpringLayout.NORTH, this);
+
 		departChamp += space;
 	}
 
+	/**
+	 * 
+	 */
 	public void reinitialiser(){
 		for(Champ unChamp : champs){
-			unChamp.initialiserSaisie();
+			if (Lexique.FE_TITRE_AJOUT.equals(titre) && unChamp.getType() == Lexique.CHAMP_ID) {
+				this.notifierObservateur(Lexique.FO_ATTRID, champs[0]);
+			} else// if(!(unChamp.getType() == Lexique.CHAMP_ID && Lexique.FE_TITRE_MODIF.equals(titre)))
+			{
+				unChamp.initialiserSaisie();
+			}
 		}
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
 	public Employe lireEmploye(){
 		Employe employe = new Employe();
-		employe.setId(champs[0].getDansSaisie());
-		employe.setNom(champs[1].getDansSaisie());
-		employe.setPrenom(champs[2].getDansSaisie());
-		employe.setLogin(champs[3].getDansSaisie());
-		employe.setMotDePasse(champs[4].getDansSaisie());
-		employe.setAdresse(champs[5].getDansSaisie());
-		employe.setCodePostal(champs[6].getDansSaisie());
-		employe.setVille(champs[7].getDansSaisie());
-		employe.setDateE(champs[8].getDansSaisie());
-		employe.setServiceId(champs[9].getIndex());
+		employe.setId(champs[0].getText());
+		employe.setNom(champs[1].getText());
+		employe.setPrenom(champs[2].getText());
+		employe.setLogin(champs[3].getText());
+		employe.setMotDePasse(champs[4].getText());
+		employe.setAdresse(champs[5].getText());
+		employe.setCodePostal(champs[6].getText());
+		employe.setVille(champs[7].getText());
+		employe.setMail(champs[8].getText());
+		employe.setTelephone(champs[9].getText());
+		employe.setDateE(champs[10].getText());
+		employe.setServiceId(champs[11].getText());
 		return employe;
 	}
 
-
-
-	@Override
+	/**
+	 * 
+	 */
 	public void actualiser(Observable o) {
 		// TODO Auto-generated method stub
-
-
-		if(o == champs[0] && !(Lexique._TITRE_MODIF.equals(titre))){ // Gestion du champ ID
-			// Verification de l'existance en base et du respect du format(1 à 4 caractères)
-			// et coloration en fonction du resultat
-			int i = champs[0].getText().length();
-			if(i > 4) i=4;
-			String text = champs[0].getText().substring(0, i);
-			if(!getControleur().verifId(text)){
-				Color rouge = new Color(255, 80, 80);
-				champs[0].getCompo().setBackground(rouge);
-			}else{
-				champs[0].getCompo().setBackground(Color.GREEN);
+		if(o == champs[0]){
+			this.notifierObservateur(Lexique.COLOR_ID, champs[0]);
+		} else if(o == champs[1] || o == champs[2]){
+			if(!champs[2].getText().isEmpty() && 
+					!champs[1].getText().isEmpty()){
+				Champ[] lesChamps = new Champ[3];
+				lesChamps[0] = champs[1];
+				lesChamps[1] = champs[2];
+				lesChamps[2] = champs[3];	
+				this.notifierObservateur(Lexique.GENERE_LOG, lesChamps);
 			}
-		}
-		if((o == champs[1] || o == champs[2]) && 
-				(!champs[2].getText().equals(null) && !champs[2].getText().equals("")) && 
-				(!champs[1].getText().equals(null) && !champs[1].getText().equals("")) && 
-				(champs[3].getText().equals(null) || champs[3].getText().equals(""))){ 
-			// Gestion du champ Login
-			// Verification de l'existance en base 
-			// generation à partir des nom et prenom automatique
-			//Si les champ nom et prénom on été modifié et ne sont pas vide
-			String log = champs[2].getText().substring(0, 1) + champs[1].getText();
-			if(!getControleur().verifLogin(log)){
-				log = getControleur().formaterLog(log);
-				champs[3].setText(log);
+		} else if(o == champs[3]){
+			this.notifierObservateur(Lexique.COLOR_LOG, champs[3]);
+		} else if(o == champs[4]){
+			this.notifierObservateur(Lexique.COLOR_MDP, champs[4]);
+		} 
 
-			}else{
-				champs[3].setText(log);
-			}
-		}
-		if(o == champs[3] && !champs[3].getText().equals(unEmploye.getLogin())){
-			int i = champs[3].getText().length();
-			String log = champs[3].getText().substring(0, i);
-			if(!getControleur().verifLogin(log)){
-				Color rouge = new Color(255, 80, 80);
-				champs[3].getCompo().setBackground(rouge);
-			}else{
-				champs[3].getCompo().setBackground(Color.GREEN);
-			}
+	}
+
+	/**
+	 * 
+	 */
+	public void afficher(int code, Employe employe){	//	Le controleur demande à afficher un message
+		switch(code){
+		case Lexique.FO_MESSAGE_A:
+			FactMessage.message(Lexique.FO_MESSAGE_A);		
+			reinitialiser();
+			notifierObservateur(Lexique.LI_VALIDE_AJ);
+			break;
+		case Lexique.FO_MESSAGE_MO:
+			FactMessage.message(Lexique.FO_MESSAGE_MO);
+			unEmploye = employe;
+			majChamps();
+			notifierObservateur(Lexique.LI_VALIDE_MO);
+			break;
+		case Lexique.FO_ERREUR_AJ:
+		case Lexique.FO_ERREUR_ID:
+		case Lexique.FO_ERREUR_NOM:
+		case Lexique.FO_ERREUR_PRE:
+		case Lexique.FO_ERREUR_LOG:
+		case Lexique.FO_ERREUR_MDP:
+		case Lexique.FO_ERREUR_ADR:
+		case Lexique.FO_ERREUR_CP:
+		case Lexique.FO_ERREUR_VILLE:
+		case Lexique.FO_ERREUR_MAIL:
+		case Lexique.FO_ERREUR_TEL:
+		case Lexique.FO_ERREUR_DATE:
+			FactMessage.message(code);
+			break;
 		}
 	}
 
+	/**
+	 * 
+	 */
 	public void actualiser(Observable o, int code){
-		if(o instanceof Bouton){
-			Employe employe = lireEmploye();
-			int retour;
-			switch(code){
-			case Lexique.FO_AJ:
-				retour = getControleur().validerEmploye(employe, Lexique.FO_AJOUT);
-				switch(retour){
-				case Lexique.FO_MESSAGE:
-					FactMessage.message(FactMessage._MESSAGE_A);
-					break;
-				case Lexique.FO_ERREUR_CH:
-					FactMessage.message(FactMessage._ERREUR_CH);
-				}
-				break;
-			case Lexique.FO_MO:
-				//	On confirme que l'utilisateur souhaite modifier cette employé
-				if(FactMessage.message(FactMessage._CONFIRM_M) == 0){
-					retour = getControleur().validerEmploye(employe, Lexique.FO_MODIF);
-					switch(retour){
-					case Lexique.FO_MESSAGE:
-						FactMessage.message(FactMessage._MESSAGE_M);
-						unEmploye = employe;
-						majChamps();
-						break;
-					case Lexique.FO_ERREUR_CH:
-						FactMessage.message(FactMessage._ERREUR_CH);
-					case 2:
-						FactMessage.message(FactMessage._ERREUR_MO);
-					}
-					break;
-				}
-				FactMessage.message(FactMessage._MESSAGE_M);
-				break;
-			case Lexique.FO_RE:
-				reinitialiser();
-				break;
-			case Lexique.FO_BA:
-				notifierObservateur(Lexique.FO_BA);
-				break;
-			}
+		Employe employe = lireEmploye();
+		int retour;
+		switch(code){
+		case Lexique.FO_AJ:	//	L'utilisateur ajoute un employé
+			this.notifierObservateur(Lexique.FO_AJOUT, employe, champs);
+			break;
+		case Lexique.FO_MO:	//	L'utilisateur modifie un employé
+			this.notifierObservateur(Lexique.FO_MODIF, employe, champs);
+			break;
+			//	L'utilisateur réinitialise le formulaire
+		case Lexique.FO_RE:
+			reinitialiser();
+			break;
+			//	L'utitilsateur quitte le formulaire
+		case Lexique.FO_BA:
+			notifierObservateur(Lexique.FO_BA);
+			break;
+		case Lexique.BO_DATE_NOW:
+			notifierObservateur(Lexique.BO_DATE_NOW, champs[10]);
+			break;
+		case Lexique.BO_GENE_PASS:
+			notifierObservateur(Lexique.BO_GENE_PASS, champs[4]);
+			break;
 		}
+	}
+
+	/**
+	 * 
+	 */
+	public void windowClosing(WindowEvent arg0) {
+		notifierObservateur(Lexique.FO_FERMETURE);
 	}
 }

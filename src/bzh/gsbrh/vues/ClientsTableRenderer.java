@@ -13,6 +13,7 @@ import javax.swing.JTable;
 import javax.swing.UIManager;
 
 import bzh.gsbrh.controleurs.Controleur;
+import bzh.gsbrh.observateurs.Bouton;
 import bzh.gsbrh.observateurs.EditeurCellule;
 import bzh.gsbrh.observateurs.Lexique;
 import bzh.gsbrh.observateurs.Observable;
@@ -20,19 +21,18 @@ import bzh.gsbrh.observateurs.Observateur;
 
 public class ClientsTableRenderer extends EditeurCellule
 {
-	private JButton button;
+	private Bouton button;
 	private String label;
 	private boolean clicked;
 	private int row, col;
 	private JTable table;
 	public String id;
 	
-
 	public ClientsTableRenderer(JCheckBox checkBox, Observateur o)
 	{
 		super(checkBox, o);
 		
-		button = new JButton();
+		button = new BReinitialiser();
 		button.setOpaque(true);
 		button.addActionListener(new ActionListener()
 		{
@@ -51,8 +51,8 @@ public class ClientsTableRenderer extends EditeurCellule
 		button.setForeground(Color.black);
 		button.setBackground(UIManager.getColor("Button.background"));
 		label = (value == null) ? "" : value.toString();
-		if(value instanceof JButton){
-			  label = ((JButton) value).getText();
+		if(value instanceof Bouton){
+			  label = ((Bouton) value).getText();
 		}
 		button.setText(label);
 		clicked = true;
@@ -67,11 +67,10 @@ public class ClientsTableRenderer extends EditeurCellule
 			
 			if(new String(label).equals(Lexique.BOUTON_MODIF)){
 				notifierObservateur(id,Lexique.LI_MO);
-				
 			}
 			
 			if(new String(label).equals(Lexique.BOUTON_SUPPR)){
-				notifierObservateur(id,Lexique.LI_SU);
+				notifierObservateur(id,Lexique.LI_PR);
 			}
 			
 		}
@@ -88,7 +87,11 @@ public class ClientsTableRenderer extends EditeurCellule
 
 	protected void fireEditingStopped()
 	{
+		try{
 		super.fireEditingStopped();
+		}catch(Exception e){
+			
+		}
 	}
 
 }

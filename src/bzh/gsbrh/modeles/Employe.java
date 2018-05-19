@@ -20,7 +20,7 @@ public class Employe {
 
 	private String mail= "";
 
-	private Integer telephone;
+	private String telephone = "";
 
 	private String login= "";
 
@@ -66,18 +66,22 @@ public class Employe {
 	}
 
 	public String getMail() {
-		return secure(mail);
+		if(mail == null)
+			return "";
+		return mail;
 	}
 
 	public void setMail(String mail) {
 		this.mail = mail;
 	}
 
-	public Integer getTelephone() {
+	public String getTelephone() {
+		if(telephone == null)
+			return "";
 		return telephone;
 	}
 
-	public void setTelephone(Integer telephone) {
+	public void setTelephone(String telephone) {
 		this.telephone = telephone;
 	}
 
@@ -120,7 +124,7 @@ public class Employe {
 
 	public void setDateD(String date) {
 		if (date == null) {
-		    date = ""; // or whatever special case
+		    date = ""; 
 		}
 		this.dateD = date;
 	}
@@ -141,9 +145,13 @@ public class Employe {
 		this.ville = ville;
 	}
 	private String secure(String valeur){
-		if(valeur.equals(null))
+		if(valeur.equals(null) || valeur.isEmpty())
 			valeur = "";
 		return valeur;
+	}
+
+	public void setServiceId(String serviceId) {
+		this.serviceId = Integer.parseInt(serviceId);
 	}
 
 }

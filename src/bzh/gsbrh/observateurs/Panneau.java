@@ -3,18 +3,22 @@ package bzh.gsbrh.observateurs;
 import java.util.ArrayList;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.SpringLayout;
+
+import bzh.gsbrh.modeles.Employe;
+import bzh.gsbrh.vues.Champ;
 
 public abstract class Panneau extends JPanel implements Observateur,Observable {
 
 	private ArrayList<Observateur> tabObservateur;
-	final public static int _TEXT = 0;
-	final public static int _PASS = 1;
-	final public static int _COMB = 2;
+	public JScrollPane getScrollpane(){
+		return null;
+	}
 
 	public Panneau(SpringLayout layout){
 		super(layout);
-		tabObservateur = new ArrayList();
+		tabObservateur = new ArrayList<Observateur>();
 	}
 
 	public Panneau(Observateur o,SpringLayout layout){
@@ -84,5 +88,31 @@ public abstract class Panneau extends JPanel implements Observateur,Observable {
 			tabObservateur.get(i).actualiser(this, id);
 		}
 	}
+	public void notifierObservateur(int code, Champ[] champs) {
+		// TODO Auto-generated method stub
+		for(int i = 0; i<tabObservateur.size(); i++){
+			tabObservateur.get(i).actualiser(this,code, champs);
+		}
+	}
+	@Override
+	public void notifierObservateur(int code, Employe employe) {
+		// TODO Auto-generated method stub
+		for(int i = 0; i<tabObservateur.size(); i++){
+			tabObservateur.get(i).actualiser(this,code,employe);
+		}
+	}
+	
+	public void actualiser(Observable o, int code, Champ[] champs){
+		notifierObservateur(code,champs);
+	}
+
+	public void actualiser(Observable o, int code, Employe employe){
+		notifierObservateur(code,employe);
+	}
+	
+	public void notifierObservateur(int code, Champ champs){}
+	public void actualiser(Observable o, int code, Champ champs){}
+	public void notifierObservateur(int code, Employe employe, Champ[] champs){}
+	public void actualiser(Observable o, int code, Employe employe, Champ[] champs){}
 
 }

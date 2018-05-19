@@ -1,12 +1,18 @@
 package bzh.gsbrh.vues;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.swing.JButton;
+import javax.swing.event.TableModelEvent;
 import javax.swing.table.AbstractTableModel;
+import bzh.gsbrh.modeles.Employe;
+import bzh.gsbrh.observateurs.Bouton;
 
 //Classe modèle personnalisée
 
 public class ZModel extends AbstractTableModel{
-
+	private List<Employe> Employe = new ArrayList<Employe>();
 	public Object[][] data;
 
 	private String[] title;
@@ -20,6 +26,10 @@ public class ZModel extends AbstractTableModel{
 
 		this.title = title;
 
+	}
+
+	public void setData(Object[][] data){
+		this.data = data;
 	}
 
 
@@ -49,8 +59,8 @@ public class ZModel extends AbstractTableModel{
 
 	}            
 
-	
-	
+
+
 	//Retourne la classe de la donnée de la colonne
 	public Class getColumnClass(int col){
 		//return null;
@@ -60,9 +70,7 @@ public class ZModel extends AbstractTableModel{
 		//On se moque de la ligne puisque les types de données sont les mêmes quelle que soit la ligne
 
 		//On choisit donc la première ligne
-
 		return this.data[0][col].getClass();
-
 	}
 
 	//Retourne vrai si la cellule est éditable : celle-ci sera donc éditable
@@ -72,7 +80,7 @@ public class ZModel extends AbstractTableModel{
 
 		//Et on effectue un traitement spécifique si c'est un JButton
 
-		if(getValueAt(0, col) instanceof JButton)
+		if(getValueAt(0, col) instanceof Bouton)
 
 			return false;
 
@@ -87,5 +95,12 @@ public class ZModel extends AbstractTableModel{
 
 	}
 
+	public void modifierEmploye(){
+		this.fireTableDataChanged();
+	}
+	//	
+	//	public void ajouterEmploye(int rowIndex){
+	//		fireTableRowsInserted(rowIndex,rowIndex);
+	//	}
 }
 
