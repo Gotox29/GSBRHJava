@@ -10,7 +10,7 @@ A terme l'application devra permettre :
   * [X] Ajouter un employé
   * [X] Consulter une liste d'employé
     * [X] Modifier un employé
-    * [ ] Programmer date départ d'un employé !! Si la date est dépassé il passera dans un onglet ancien amployé
+    * [X] Programmer date départ d'un employé !! Si la date est dépassé il passera dans un onglet ancien amployé
   * [X] Connexion de l'utilisateur
 
 Installation de l'application GSBRH
