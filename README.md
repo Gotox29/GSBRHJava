@@ -18,9 +18,9 @@ Installation de l'application GSBRH
 
 * Télécharger les dossiers src, bin et lib ainsi que le script GSBRH.sql
 
-* Placer le tout dans un dossier GSBRH dans votre workspace(pour eclypse java)
+* Placer le tout dans un dossier GSBRH_OBS dans votre workspace(pour eclypse java)
 
-* Ouvrir java et créer dans ce même workspace un projet nommer GSBRH (en environement javaSE-1.8)
+* Ouvrir eclypse java et créer dans ce même workspace un projet nommer GSBRH_OBS (en environement javaSE-1.8)
 
 * Importer la base de données GSBRH.sql dans votre serveur SGBDR
 
