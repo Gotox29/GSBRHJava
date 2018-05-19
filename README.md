@@ -1,4 +1,4 @@
-# Application GSB_RH
+# Application GSBRH
 
 Autheur : __Anthony Nizac__
 
@@ -13,18 +13,18 @@ A terme l'application devra permettre :
     * [ ] Programmer date départ d'un employé !! Si la date est dépassé il passera dans un onglet ancien amployé
   * [X] Connexion de l'utilisateur
 
-Installation de l'application GSBRH_OBS
+Installation de l'application GSBRH
 ---------------------------------------
 
 * Télécharger les dossiers src, bin et lib ainsi que le script GSBRH.sql
 
-* Placer le tout dans un dossier GSBRH_OBS dans votre workspace(pour eclypse java)
+* Placer le tout dans un dossier GSBRH dans votre workspace(pour eclypse java)
 
-* Ouvrir java et créer dans ce même workspace un projet nommer GSBRH_OBS (en environement javaSE-1.8)
+* Ouvrir java et créer dans ce même workspace un projet nommer GSBRH (en environement javaSE-1.8)
 
 * Importer la base de données GSBRH.sql dans votre serveur SGBDR
 
-* Ouvrir le fichier GSBRH_OBS/src/bzh.gsbrh.modeles/ConnexionBDD.java
+* Ouvrir le fichier GSBRH/src/bzh.gsbrh.modeles/ConnexionBDD.java
 
 * Modifier les lignes 9, 10 et 11 pour les faire correspondre avec votre serveur et la base de données importé
 
