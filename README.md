@@ -10,21 +10,20 @@ A terme l'application devra permettre :
   * [X] Ajouter un employé
   * [X] Consulter une liste d'employé
     * [X] Modifier un employé
-    * [X] Programmer date départ d'un employé !! Si la date est dépassé il passera dans un onglet ancien amployé
+    * [X] Programmer date départ d'un employé !! Si la date est dépassé il passera dans un onglet ancien employé
   * [X] Connexion de l'utilisateur
 
 Installation de l'application GSBRH
 ---------------------------------------
 
-* Télécharger les dossiers src, bin et lib ainsi que le script GSBRH.sql
+* Télécharger le repertoire GSBRH ainsi que le script slam_gsb.sql
 
-* Placer le tout dans un dossier GSBRH_OBS dans votre workspace(pour eclypse java)
+* Placer le repertoire GSBRH dans votre workspace(pour eclypse java)
 
-* Ouvrir eclypse java et créer dans ce même workspace un projet nommer GSBRH_OBS (en environement javaSE-1.8)
+* Ouvrir java et créer dans ce même workspace un projet nommer GSBRH (en environement javaSE-1.8)
 
-* Importer la base de données GSBRH.sql dans votre serveur SGBDR
+* Importer la base de données slam_gsb.sql dans votre serveur de base de donnée
 
 * Ouvrir le fichier GSBRH/src/bzh.gsbrh.modeles/ConnexionBDD.java
 
-* Modifier les lignes 9, 10 et 11 pour les faire correspondre avec votre serveur et la base de données importé
-
+* Modifier les lignes 26, 31 et 36 afin de les faire correspondre avec votre serveur et la base de données précédemment importé
