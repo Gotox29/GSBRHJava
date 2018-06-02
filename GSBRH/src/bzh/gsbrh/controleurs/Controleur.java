@@ -494,7 +494,7 @@ public class Controleur extends Thread implements Observateur, Lexique {
 							lesEmployes.ajouterEmploye(employe);
 							principale.actualiserListeEmpActif(lesEmployes.getListe());
 							principale.actualiserListeEmpInactif(lesEmployes.getListeI());
-							unEmploye = employe;
+							unEmploye = employe.copie();
 						} else {
 							fenetre.afficher(FO_ERREUR_MO, employe);
 						}
