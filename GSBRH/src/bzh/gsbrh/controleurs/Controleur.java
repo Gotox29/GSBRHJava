@@ -159,7 +159,7 @@ public class Controleur extends Thread implements Observateur, Lexique {
 	 */
 	private void appliModif(String id) {
 		principale.setVisible(false);
-		unEmploye = lesEmployes.getEmploye(id);
+		unEmploye = lesEmployes.getEmploye(id).copie();
 		this.fenetre = FactFenetre.fabriqueFenetre(this, FE_MODIF, unEmploye);
 		fenetre.setVisible(true);
 	}
@@ -291,8 +291,9 @@ public class Controleur extends Thread implements Observateur, Lexique {
 			appliModif(valeur);
 			break;
 		case LI_PR: // Programmer date depart d'un employe
-			unEmploye = Requetes.trouverEmploye(valeur, M_ID);
-			PopUp pop = new PopUp(null, PP_TITRE_DATE, true, this, unEmploye);
+			unEmploye = lesEmployes.getEmploye(valeur).copie(); //Requetes.trouverEmploye(valeur, M_ID);
+			Employe employe = unEmploye.copie();
+			PopUp pop = new PopUp(null, PP_TITRE_DATE, true, this, employe);
 			pop.lancePopUp();
 			break;
 		}
