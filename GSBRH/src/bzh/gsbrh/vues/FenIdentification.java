@@ -142,7 +142,6 @@ public class FenIdentification extends Fenetre {
 			}
 		} else
 			FactMessage.fabriqueMessage(ID_ERREUR_CO);
-		saisieMdp.initialiserSaisie();
 	}
 	
 	public void afficher(int code) {
@@ -151,6 +150,7 @@ public class FenIdentification extends Fenetre {
 
 	public void reinitialiser() {
 		saisieLogin.initialiserSaisie();
+		saisieMdp.initialiserSaisie();
 		loginOk = false;
 		mdpOk = false;
 		serviceOk = false;

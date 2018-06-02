@@ -109,7 +109,7 @@ public class FactMessage implements Lexique {
 			JOptionPane.showMessageDialog(null, M_ERREUR_DECO, M_TITRE_E, JOptionPane.ERROR_MESSAGE);
 			break;
 		case ID_ERREUR_COBDD:
-			JOptionPane.showMessageDialog(null, Lexique.M_ERREUR_COBDD, M_TITRE_E, JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, M_ERREUR_COBDD, M_TITRE_E, JOptionPane.ERROR_MESSAGE);
 			break;
 		}
 

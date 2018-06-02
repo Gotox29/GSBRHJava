@@ -127,10 +127,10 @@ public class Controleur extends Thread implements Observateur, Lexique {
 		unEmploye = new Employe();
 		if (fenetre != null)
 			fenetre.setVisible(false);
-		if (this.principale == null) {
-			this.principale = FactFenetre.fabriqueFenetre(this, FE_LISTE, lesEmployes.getListe(),
-					lesEmployes.getListeI(), lesEmployes.getEntete());
-		}
+//		if (this.principale == null) {
+//			this.principale = FactFenetre.fabriqueFenetre(this, FE_LISTE, lesEmployes.getListe(),
+//					lesEmployes.getListeI(), lesEmployes.getEntete());
+//		}
 		this.principale.setVisible(true);
 
 	}
