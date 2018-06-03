@@ -60,7 +60,7 @@ public interface Lexique {
 	/**
 	 * Bouton : Programmer depart
 	 */
-	final public static String BOUTON_SUPPR = "Programmer depart";
+	final public static String BOUTON_SUPPR = "Programmer départ";
 
 	/**
 	 * Bouton : Retour
@@ -90,7 +90,7 @@ public interface Lexique {
 	/**
 	 * Bouton : Se deconnecter
 	 */
-	final public static String BOUTON_DECO = "Se deconnecter";
+	final public static String BOUTON_DECO = "Se déconnecter";
 
 	/**
 	 * Bouton : Générer mot de passe
@@ -190,22 +190,22 @@ public interface Lexique {
 	/**
 	 * Messages : Programmer date de depart :
 	 */
-	final public static String M_PROGRAM_DATED = "Programmer date de depart :";
+	final public static String M_PROGRAM_DATED = "Programmer date de départ :";
 
 	/**
 	 * Messages : Employe ajouté avec succès.
 	 */
-	final public static String M_MESSAGE_A = "Employe ajouté avec succès.";
+	final public static String M_MESSAGE_A = "Employé ajouté avec succès.";
 
 	/**
 	 * Messages : Employe retiré avec succès.
 	 */
-	final public static String M_MESSAGE_S = "Employe retiré avec succès.";
+	final public static String M_MESSAGE_S = "Employé retiré avec succès.";
 
 	/**
 	 * Messages : Employe modifié avec succès.
 	 */
-	final public static String M_MESSAGE_M = "Employe modifié avec succès.";
+	final public static String M_MESSAGE_M = "Employé modifié avec succès.";
 
 	/**
 	 * Messages : Connecté avec succès.
@@ -220,12 +220,12 @@ public interface Lexique {
 	/**
 	 * Messages : Impossible d'établir une connexion avec la base de données.
 	 */
-	final public static String M_ERREUR_COBDD = "Impossible d'etablir une connexion avec la base de données.";
+	final public static String M_ERREUR_COBDD = "Impossible d'établir une connexion avec la base de données.";
 
 	/**
 	 * Messages : Vous n'êtes pas autorisé a vous connecter ici.
 	 */
-	final public static Object M_ERREUR_SE = "Vous n'êtes pas autorisé a vous connecter ici.";
+	final public static Object M_ERREUR_SE = "Vous n'êtes pas autorisé à vous connecter ici.";
 
 	/**
 	 * Messages : Erreur dans la modification de l'employé.
@@ -246,7 +246,7 @@ public interface Lexique {
 	 * Messages : Champ id invalide.
 	 */
 
-	final public static String M_ERREUR_ID = "Champ id invalide.";
+	final public static String M_ERREUR_ID = "Champ code invalide.";
 
 	/**
 	 * Messages : Champ nom invalide.
@@ -256,7 +256,7 @@ public interface Lexique {
 	/**
 	 * Messages : Champ prenom invalide.
 	 */
-	final public static String M_ERREUR_PRE = "Champ prenom invalide.";
+	final public static String M_ERREUR_PRE = "Champ prénom invalide.";
 
 	/**
 	 * Messages : Champ identifiant invalide.
@@ -301,7 +301,7 @@ public interface Lexique {
 	/**
 	 * Message : Connexion interrompue
 	 */
-	public static final String M_ERREUR_DECO = "Connexion a l'application interropue";
+	public static final String M_ERREUR_DECO = "Connexion a l'application interrompue";
 
 	/**
 	 * Texte de libelle du champ de connexion :Identifiant :
@@ -326,7 +326,7 @@ public interface Lexique {
 	/**
 	 * Texte de libelle du champ et de colonne : Prenom
 	 */
-	final public static String PRENOM = "Prenom";
+	final public static String PRENOM = "Prénom";
 
 	/**
 	 * Texte de libelle du champ et de colonne : Identifiant
@@ -376,7 +376,7 @@ public interface Lexique {
 	/**
 	 * Texte de libelle du champ et de colonne : Date depart
 	 */
-	final public static String DATED = "Date depart";
+	final public static String DATED = "Date départ";
 
 	/**
 	 * Texte de libelle de colonne : Programmer date
