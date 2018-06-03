@@ -395,7 +395,6 @@ public class Requetes implements Lexique {
 			}
 		}
 		return liste;
-
 	}
 
 	/**

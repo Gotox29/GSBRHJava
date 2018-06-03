@@ -82,6 +82,16 @@ public class TSaisie extends JTextField implements Observable, DocumentListener,
 		addFocusListener(this);
 	}
 
+	/**
+	 * Methode permettant d'ajouter à une zone de saisie une limitation de la saisie
+	 * après son instanciation
+	 * 
+	 * @param colonne
+	 *            Nombre de caractère accépté dans la zone de texte
+	 * @param nombre
+	 *            Bouléen indiquant si la saisie doit être exlusivement numérique ou
+	 *            non
+	 */
 	public void compterTaille(int colonne, boolean nombre) {
 		this.document = new LimitText(colonne, nombre);
 		this.setDocument(this.document);
