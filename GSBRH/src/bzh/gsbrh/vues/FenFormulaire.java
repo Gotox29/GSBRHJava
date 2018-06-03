@@ -320,7 +320,7 @@ public class FenFormulaire extends Fenetre {
 				lesChamps[2] = champs[3];
 				this.notifierObservateur(GENERE_LOG, lesChamps);
 			}
-		} 
+		}
 		if (o instanceof Champ) {
 			this.notifierObservateur(CHAMP_TEST, (Champ) o);
 		}

@@ -127,10 +127,11 @@ public class Controleur extends Thread implements Observateur, Lexique {
 		unEmploye = new Employe();
 		if (fenetre != null)
 			fenetre.setVisible(false);
-//		if (this.principale == null) {
-//			this.principale = FactFenetre.fabriqueFenetre(this, FE_LISTE, lesEmployes.getListe(),
-//					lesEmployes.getListeI(), lesEmployes.getEntete());
-//		}
+		// if (this.principale == null) {
+		// this.principale = FactFenetre.fabriqueFenetre(this, FE_LISTE,
+		// lesEmployes.getListe(),
+		// lesEmployes.getListeI(), lesEmployes.getEntete());
+		// }
 		this.principale.setVisible(true);
 
 	}
@@ -291,7 +292,7 @@ public class Controleur extends Thread implements Observateur, Lexique {
 			appliModif(valeur);
 			break;
 		case LI_PR: // Programmer date depart d'un employe
-			unEmploye = lesEmployes.getEmploye(valeur).copie(); //Requetes.trouverEmploye(valeur, M_ID);
+			unEmploye = lesEmployes.getEmploye(valeur).copie(); // Requetes.trouverEmploye(valeur, M_ID);
 			Employe employe = unEmploye.copie();
 			PopUp pop = new PopUp(null, PP_TITRE_DATE, true, this, employe);
 			pop.lancePopUp();
@@ -337,7 +338,11 @@ public class Controleur extends Thread implements Observateur, Lexique {
 				} else
 					lUtilisateur = null;
 			}
-			connexion.connexion();
+			if (Requetes.ConnexionEtablie()) {
+				connexion.connexion();
+			} else {
+				FactMessage.fabriqueMessage(ID_ERREUR_COBDD);
+			}
 			break;
 		case GENERE_LOG:
 			String log = champs[1].getText().substring(0, 1).toLowerCase() + champs[0].getText().toLowerCase();
@@ -430,7 +435,7 @@ public class Controleur extends Thread implements Observateur, Lexique {
 						mettreAjour();
 						employe.getInfos(i).setValeur(lesEmployes.formaterId("1"));
 						flag = true;
-						
+
 					} else {
 						flag = false;
 						champs[i].setCouleur(false);

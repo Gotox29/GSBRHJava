@@ -38,22 +38,23 @@ public class Information implements Lexique {
 	 * Tableau de regex liés aux types
 	 */
 	private static String[] regex = { "^[a-zA-Z]{1}[0-9]{1,3}$", "[^0-9][A-Za-z-. '\\p{L}*]{1,30}$",
-			"[^0-9][A-Za-z-. '\\p{L}*]{1,30}$", "[A-Za-z0-9]{5,20}", "[A-Za-z0-9]{6,20}", ".{1,30}", "[0-9]{5}", "[A-Za-z-. '\\p{L}*]{1,30}",
-			"^[a-z0-9._-]+@[a-z0-9._-]{2,}\\.[a-z]{2,4}$", "^0[1-8][0-9]{8}$", "[0-9]{4}+-[0-9]{2}+-[0-9]{2}", "", "[0-9]{4}+-[0-9]{1,2}+-[0-9]{1,2}" };
-	
-	
+			"[^0-9][A-Za-z-. '\\p{L}*]{1,30}$", "[A-Za-z0-9]{5,20}", "[A-Za-z0-9]{6,20}", ".{1,30}", "[0-9]{5}",
+			"[A-Za-z-. '\\p{L}*]{1,30}", "^[a-z0-9._-]+@[a-z0-9._-]{2,}\\.[a-z]{2,4}$", "^0[1-8][0-9]{8}$",
+			"[0-9]{4}+-[0-9]{2}+-[0-9]{2}", "", "[0-9]{4}+-[0-9]{1,2}+-[0-9]{1,2}" };
+
 	/**
 	 * Retourne le regex du type recherché
 	 * 
-	 * @param type Type de valeur recherché
+	 * @param type
+	 *            Type de valeur recherché
 	 * @return Regex du type recherché
 	 */
 	public static String getRegex(String type) {
 		String regle = null;
 		regle = regex[Information.getByType(type)];
-		return regle; 
+		return regle;
 	}
-	
+
 	/**
 	 * Recherche l'id du type dans le tableau
 	 * 
@@ -73,7 +74,7 @@ public class Information implements Lexique {
 	 * Constructeur par defaut.
 	 */
 	public Information() {
-		
+
 	}
 
 	/**
@@ -137,7 +138,7 @@ public class Information implements Lexique {
 	 * Accesseur du tableau des code lié au modification.
 	 * 
 	 * @return Le tableau contenant la liste des codes des modification(même index
-	 *         que le type).
+	 *         que le type)
 	 */
 	public static int[] getCodeModif() {
 		return codeModif;

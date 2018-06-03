@@ -58,8 +58,8 @@ public class FactChamp implements Lexique {
 			return new Champ(o, LOGINCO, CHAMP_TEXT, true);
 		case MDPCO:
 			return new ChampPass(o, MDPCO, false);
-		
-		//	return new ChampMail(o,text);
+
+		// return new ChampMail(o,text);
 		}
 
 		return null;

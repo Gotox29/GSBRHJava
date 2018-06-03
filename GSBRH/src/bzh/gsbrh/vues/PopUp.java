@@ -240,7 +240,6 @@ public class PopUp extends JDialog implements Observateur, Observable, Lexique {
 	}
 
 	public void actualiser(Observable o, int id) {
-		System.out.println("1");
 		switch (id) {
 		case BO_DATE_NOW:
 			this.notifierObservateur(BO_DATE_NOW, date);
@@ -258,11 +257,9 @@ public class PopUp extends JDialog implements Observateur, Observable, Lexique {
 	}
 
 	public void actualiser(Observable o, String valeur) {
-		System.out.println("2");
 	}
 
 	public void actualiser(Observable o, String valeur, int code) {
-		System.out.println("3");
 	}
 
 	public void notifierObservateur(int code, Champ[] champs) {
@@ -278,12 +275,10 @@ public class PopUp extends JDialog implements Observateur, Observable, Lexique {
 	}
 
 	public void actualiser(Observable o, int code, Champ[] champs) {
-		System.out.println("4");
 		notifierObservateur(code, champs);
 	}
 
 	public void actualiser(Observable o, int code, Employe employe) {
-		System.out.println("5");
 		notifierObservateur(code, employe);
 	}
 

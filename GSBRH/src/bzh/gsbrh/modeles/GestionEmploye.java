@@ -71,7 +71,7 @@ public class GestionEmploye implements Lexique {
 	 * Booléen qui inverse ou non le sens du tri.
 	 */
 	private boolean inverse = false;
-	
+
 	/**
 	 * Unique instance de GestionEmploye
 	 */
@@ -113,12 +113,14 @@ public class GestionEmploye implements Lexique {
 	/**
 	 * Méthode singleton pour instancier l'unique instance de GestionEmploye
 	 * 
-	 * @param lesEmployes Collection d'employé.
-	 * @param services Tableau des libellés des services.
+	 * @param lesEmployes
+	 *            Collection d'employé.
+	 * @param services
+	 *            Tableau des libellés des services.
 	 * @return L'unique instance de GestionEmploye
 	 */
 	public static GestionEmploye gestionEmploye(ArrayList<Employe> lesEmployes, String[] services) {
-		if(moi == null && lesEmployes != null) {
+		if (moi == null && lesEmployes != null) {
 			moi = new GestionEmploye(lesEmployes, services);
 		}
 		return moi;
@@ -519,7 +521,7 @@ public class GestionEmploye implements Lexique {
 	 */
 	public boolean verifId(String id, Employe unEmploye) {
 		boolean flag = false;
-		if ((verif(ID,id,unEmploye)) && (!idExiste(id) || id.equals(unEmploye.getInfos(ID).getValeur()))) {
+		if ((verif(ID, id, unEmploye)) && (!idExiste(id) || id.equals(unEmploye.getInfos(ID).getValeur()))) {
 			flag = true;
 		}
 		return flag;
@@ -586,7 +588,7 @@ public class GestionEmploye implements Lexique {
 	 */
 	public boolean verifLogin(String login) {
 		boolean flag = false;
-		if ((verif(LOGIN,login,null)) && (!logExiste(login))) {
+		if ((verif(LOGIN, login, null)) && (!logExiste(login))) {
 			flag = true;
 		}
 		return flag;
@@ -604,7 +606,7 @@ public class GestionEmploye implements Lexique {
 	 */
 	public boolean verifLogin(String login, Employe unEmploye) {
 		boolean flag = false;
-		if ((verif(LOGIN,login,unEmploye))
+		if ((verif(LOGIN, login, unEmploye))
 				&& (!logExiste(login) || login.equals(unEmploye.getInfos(LOGIN).getValeur()))) {
 			flag = true;
 		}
@@ -659,108 +661,120 @@ public class GestionEmploye implements Lexique {
 		return temp;
 	}
 
-//	/**
-//	 * Vérifie le texte passé en paramète.
-//	 * 
-//	 * @param text
-//	 *            Le texte à verifier.
-//	 * @return Un booléen qui confirme ou non que le texte est conforme.
-//	 */
-//	public boolean verifText(String text) {
-//		boolean flag = false;
-//		if (!text.isEmpty() && text.length() <= 30) {
-//			flag = true;
-//		}
-//		return flag;
-//	}
-//
-//	/**
-//	 * Vérifie le teléphone passé en paramètre.
-//	 * 
-//	 * @param tel
-//	 *            Numéro de téléphone à vérifier.
-//	 * @return Un booléen qui confirme ou non que le téléphone est conforme.
-//	 */
-//	public boolean verifTel(String tel) {
-//		boolean flag = false;
-//		if (!tel.isEmpty() && tel.length() == 10) {
-//			flag = true;
-//		}
-//		return flag;
-//	}
-//
-//	/**
-//	 * Vérifie si le mot de passe est conforme.
-//	 * 
-//	 * @param mdp
-//	 *            Mot de passe à vérifier.
-//	 * @return Un booléen qui confirme ou non que le mot de passe est conforme.
-//	 */
-//	public boolean verifMdp(String mdp) {
-//		boolean flag = false;
-//		if (mdp.length() <= 20 && mdp.length() > 6) {
-//			flag = true;
-//		}
-//		return flag;
-//	}
-//
-//	/**
-//	 * Vérifie si le code postal est conforme.
-//	 * 
-//	 * @param cp
-//	 *            Code postal à vérifier.
-//	 * @return Un booléen qui confirme ou non que le code postal est conforme.
-//	 */
-//	public boolean verifCP(String cp) {
-//		boolean flag = false;
-//		if (cp.length() == 5) {
-//			flag = true;
-//		}
-//		return flag;
-//	}
-//
-//	/**
-//	 * Verifie si la date est conforme.
-//	 * 
-//	 * @param date
-//	 *            Date à vérifier.
-//	 * @return Un booléen qui confirme ou non que la date est conforme.
-//	 */
-//	public boolean verifDate(String date) {
-//		boolean flag = false;
-//		String[] dates = date.split("-");
-//		if (dates.length < 3)
-//			return false;
-//		int jours = Integer.parseInt(dates[2]);
-//		int mois = Integer.parseInt(dates[1]);
-//		int annees = Integer.parseInt(dates[0]);
-//		try {
-//			LocalDate.of(annees, mois, jours);
-//			flag = true;
-//		} catch (Exception e) {
-//			flag = false;
-//		}
-//		return flag;
-//	}
+	// /**
+	// * Vérifie le texte passé en paramète.
+	// *
+	// * @param text
+	// * Le texte à verifier.
+	// * @return Un booléen qui confirme ou non que le texte est conforme.
+	// */
+	// public boolean verifText(String text) {
+	// boolean flag = false;
+	// if (!text.isEmpty() && text.length() <= 30) {
+	// flag = true;
+	// }
+	// return flag;
+	// }
+	//
+	// /**
+	// * Vérifie le teléphone passé en paramètre.
+	// *
+	// * @param tel
+	// * Numéro de téléphone à vérifier.
+	// * @return Un booléen qui confirme ou non que le téléphone est conforme.
+	// */
+	// public boolean verifTel(String tel) {
+	// boolean flag = false;
+	// if (!tel.isEmpty() && tel.length() == 10) {
+	// flag = true;
+	// }
+	// return flag;
+	// }
+	//
+	// /**
+	// * Vérifie si le mot de passe est conforme.
+	// *
+	// * @param mdp
+	// * Mot de passe à vérifier.
+	// * @return Un booléen qui confirme ou non que le mot de passe est conforme.
+	// */
+	// public boolean verifMdp(String mdp) {
+	// boolean flag = false;
+	// if (mdp.length() <= 20 && mdp.length() > 6) {
+	// flag = true;
+	// }
+	// return flag;
+	// }
+	//
+	// /**
+	// * Vérifie si le code postal est conforme.
+	// *
+	// * @param cp
+	// * Code postal à vérifier.
+	// * @return Un booléen qui confirme ou non que le code postal est conforme.
+	// */
+	// public boolean verifCP(String cp) {
+	// boolean flag = false;
+	// if (cp.length() == 5) {
+	// flag = true;
+	// }
+	// return flag;
+	// }
+	//
+	// /**
+	// * Verifie si la date est conforme.
+	// *
+	// * @param date
+	// * Date à vérifier.
+	// * @return Un booléen qui confirme ou non que la date est conforme.
+	// */
+	// public boolean verifDate(String date) {
+	// boolean flag = false;
+	// String[] dates = date.split("-");
+	// if (dates.length < 3)
+	// return false;
+	// int jours = Integer.parseInt(dates[2]);
+	// int mois = Integer.parseInt(dates[1]);
+	// int annees = Integer.parseInt(dates[0]);
+	// try {
+	// LocalDate.of(annees, mois, jours);
+	// flag = true;
+	// } catch (Exception e) {
+	// flag = false;
+	// }
+	// return flag;
+	// }
 
+	/**
+	 * Verifie une valeur en fonction de son type. Le programme va cherché le regex
+	 * lié au type de la valeur passé en paramètre et le test sur cette même valeur
+	 * 
+	 * @param type
+	 *            Type de valeur passé en paramètre
+	 * @param valeur
+	 *            Valeur à tester
+	 * @param unEmploye
+	 *            Employé à qui appartient la valeur(peut être null)
+	 * @return Un bouléen qui confirme ou non que la valeur est conforme
+	 */
 	public boolean verif(String type, String valeur, Employe unEmploye) {
 		boolean flag = false;
-		
+
 		if (Pattern.matches(Information.getRegex(type), valeur)) {
-			if(type.equals(ID) || type.equals(LOGIN)) {
-				if(type.equals(ID) && (!idExiste(valeur) || valeur.equals(unEmploye.getInfos(ID).getValeur()))) {
+			if (type.equals(ID) || type.equals(LOGIN)) {
+				if (type.equals(ID) && (!idExiste(valeur) || valeur.equals(unEmploye.getInfos(ID).getValeur()))) {
 					flag = true;
-				} else if(type.equals(LOGIN) && (!idExiste(valeur) || valeur.equals(unEmploye.getInfos(LOGIN).getValeur()))) {
+				} else if (type.equals(LOGIN)
+						&& (!idExiste(valeur) || valeur.equals(unEmploye.getInfos(LOGIN).getValeur()))) {
 					flag = true;
 				}
 			} else {
 				flag = true;
 			}
 		}
-		System.out.println(type + " + " +valeur + " == "+flag+" regex vaut : "+Pattern.matches(Information.getRegex(type), valeur));
 		return flag;
 	}
-	
+
 	/**
 	 * Vérifie si un employé existe dans la liste des employés
 	 * 
