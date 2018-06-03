@@ -1,7 +1,7 @@
 package bzh.gsbrh.modeles;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.regex.Pattern;
 
 import bzh.gsbrh.observateurs.Lexique;
 
@@ -621,7 +621,7 @@ public class GestionEmploye implements Lexique {
 	 */
 	public boolean logExiste(String log) {
 		boolean flag = false;
-		log = log.toLowerCase();
+		log = StringOperation.sansAccent(log.toLowerCase());
 		if (employeExiste(log, M_LOGIN)) {
 			flag = true;
 		}
@@ -636,7 +636,7 @@ public class GestionEmploye implements Lexique {
 	 * @return Le login formaté, unique et valide.
 	 */
 	public String formaterLog(String log) {
-		log = log.toLowerCase();
+		log = StringOperation.sansAccent(log.toLowerCase());
 		if (logExiste(log) || !verifLogin(log))
 			log = formaterLog(log, 1);
 		return log;
@@ -659,90 +659,108 @@ public class GestionEmploye implements Lexique {
 		return temp;
 	}
 
-	/**
-	 * Vérifie le texte passé en paramète.
-	 * 
-	 * @param text
-	 *            Le texte à verifier.
-	 * @return Un booléen qui confirme ou non que le texte est conforme.
-	 */
-	public boolean verifText(String text) {
+//	/**
+//	 * Vérifie le texte passé en paramète.
+//	 * 
+//	 * @param text
+//	 *            Le texte à verifier.
+//	 * @return Un booléen qui confirme ou non que le texte est conforme.
+//	 */
+//	public boolean verifText(String text) {
+//		boolean flag = false;
+//		if (!text.isEmpty() && text.length() <= 30) {
+//			flag = true;
+//		}
+//		return flag;
+//	}
+//
+//	/**
+//	 * Vérifie le teléphone passé en paramètre.
+//	 * 
+//	 * @param tel
+//	 *            Numéro de téléphone à vérifier.
+//	 * @return Un booléen qui confirme ou non que le téléphone est conforme.
+//	 */
+//	public boolean verifTel(String tel) {
+//		boolean flag = false;
+//		if (!tel.isEmpty() && tel.length() == 10) {
+//			flag = true;
+//		}
+//		return flag;
+//	}
+//
+//	/**
+//	 * Vérifie si le mot de passe est conforme.
+//	 * 
+//	 * @param mdp
+//	 *            Mot de passe à vérifier.
+//	 * @return Un booléen qui confirme ou non que le mot de passe est conforme.
+//	 */
+//	public boolean verifMdp(String mdp) {
+//		boolean flag = false;
+//		if (mdp.length() <= 20 && mdp.length() > 6) {
+//			flag = true;
+//		}
+//		return flag;
+//	}
+//
+//	/**
+//	 * Vérifie si le code postal est conforme.
+//	 * 
+//	 * @param cp
+//	 *            Code postal à vérifier.
+//	 * @return Un booléen qui confirme ou non que le code postal est conforme.
+//	 */
+//	public boolean verifCP(String cp) {
+//		boolean flag = false;
+//		if (cp.length() == 5) {
+//			flag = true;
+//		}
+//		return flag;
+//	}
+//
+//	/**
+//	 * Verifie si la date est conforme.
+//	 * 
+//	 * @param date
+//	 *            Date à vérifier.
+//	 * @return Un booléen qui confirme ou non que la date est conforme.
+//	 */
+//	public boolean verifDate(String date) {
+//		boolean flag = false;
+//		String[] dates = date.split("-");
+//		if (dates.length < 3)
+//			return false;
+//		int jours = Integer.parseInt(dates[2]);
+//		int mois = Integer.parseInt(dates[1]);
+//		int annees = Integer.parseInt(dates[0]);
+//		try {
+//			LocalDate.of(annees, mois, jours);
+//			flag = true;
+//		} catch (Exception e) {
+//			flag = false;
+//		}
+//		return flag;
+//	}
+
+	public boolean verif(String type, String valeur, Employe unEmploye) {
 		boolean flag = false;
-		if (!text.isEmpty() && text.length() <= 30) {
-			flag = true;
+		
+		if (Pattern.matches(Information.getRegex(type), valeur)) {
+			if(type.equals(ID) || type.equals(LOGIN)) {
+				if(type.equals(ID) && (!idExiste(valeur) || valeur.equals(unEmploye.getInfos(ID).getValeur()))) {
+					flag = true;
+				} else if(type.equals(LOGIN) && (!idExiste(valeur) || valeur.equals(unEmploye.getInfos(LOGIN).getValeur()))) {
+					flag = true;
+				}
+			} else {
+				flag = true;
+			}
 		}
+		System.out.println(type + " + " +valeur + " == "+flag+" regex vaut : "+Pattern.matches(Information.getRegex(type), valeur));
 		return flag;
 	}
-
-	/**
-	 * Vérifie le teléphone passé en paramètre.
-	 * 
-	 * @param tel
-	 *            Numéro de téléphone à vérifier.
-	 * @return Un booléen qui confirme ou non que le téléphone est conforme.
-	 */
-	public boolean verifTel(String tel) {
-		boolean flag = false;
-		if (!tel.isEmpty() && tel.length() == 10) {
-			flag = true;
-		}
-		return flag;
-	}
-
-	/**
-	 * Vérifie si le mot de passe est conforme.
-	 * 
-	 * @param mdp
-	 *            Mot de passe à vérifier.
-	 * @return Un booléen qui confirme ou non que le mot de passe est conforme.
-	 */
-	public boolean verifMdp(String mdp) {
-		boolean flag = false;
-		if (mdp.length() <= 20 && mdp.length() > 6) {
-			flag = true;
-		}
-		return flag;
-	}
-
-	/**
-	 * Vérifie si le code postal est conforme.
-	 * 
-	 * @param cp
-	 *            Code postal à vérifier.
-	 * @return Un booléen qui confirme ou non que le code postal est conforme.
-	 */
-	public boolean verifCP(String cp) {
-		boolean flag = false;
-		if (cp.length() == 5) {
-			flag = true;
-		}
-		return flag;
-	}
-
-	/**
-	 * Verifie si la date est conforme.
-	 * 
-	 * @param date
-	 *            Date à vérifier.
-	 * @return Un booléen qui confirme ou non que la date est conforme.
-	 */
-	public boolean verifDate(String date) {
-		boolean flag = false;
-		String[] dates = date.split("-");
-		if (dates.length < 3)
-			return false;
-		int jours = Integer.parseInt(dates[2]);
-		int mois = Integer.parseInt(dates[1]);
-		int annees = Integer.parseInt(dates[0]);
-		try {
-			LocalDate.of(annees, mois, jours);
-			flag = true;
-		} catch (Exception e) {
-			flag = false;
-		}
-		return flag;
-	}
-
+	
 	/**
 	 * Vérifie si un employé existe dans la liste des employés
 	 * 
@@ -786,47 +804,47 @@ public class GestionEmploye implements Lexique {
 	public int testChamp(String valeur, String type, Employe employe) {
 		switch (type) {
 		case ID:
-			if (!verifId(valeur, employe))
+			if (!verif(type, valeur, employe))
 				return FO_ERREUR_ID;
 			break;
 		case NOM:
-			if (!verifText(valeur))
+			if (!verif(type, valeur, employe))
 				return FO_ERREUR_NOM;
 			break;
 		case PRENOM:
-			if (!verifText(valeur))
+			if (!verif(type, valeur, employe))
 				return FO_ERREUR_PRE;
 			break;
 		case LOGIN:
-			if (!verifLogin(valeur, employe))
+			if (!verif(type, valeur, employe))
 				return FO_ERREUR_LOG;
 			break;
 		case MDP:
-			if (!verifMdp(valeur))
+			if (!verif(type, valeur, employe))
 				return FO_ERREUR_MDP;
 			break;
 		case ADR:
-			if (!verifText(valeur))
+			if (!verif(type, valeur, employe))
 				return FO_ERREUR_ADR;
 			break;
 		case CP:
-			if (!verifCP(valeur))
+			if (!verif(type, valeur, employe))
 				return FO_ERREUR_CP;
 			break;
 		case VILLE:
-			if (!verifText(valeur))
+			if (!verif(type, valeur, employe))
 				return FO_ERREUR_VILLE;
 			break;
 		case MAIL:
-			if (!verifText(valeur))
+			if (!verif(type, valeur, employe))
 				return FO_ERREUR_MAIL;
 			break;
 		case TEL:
-			if (!verifTel(valeur))
+			if (!verif(type, valeur, employe))
 				return FO_ERREUR_TEL;
 			break;
 		case DATEE:
-			if (!verifDate(valeur))
+			if (!verif(type, valeur, employe))
 				return FO_ERREUR_DATE;
 			break;
 		}

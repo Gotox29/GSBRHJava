@@ -34,6 +34,33 @@ public class Information implements Lexique {
 	private static int[] codeModif = { M_ID, M_NOM, M_PRENOM, M_LOGIN, M_MDP, M_ADRESSE, M_CP, M_VILLE, M_MAIL, M_TEL,
 			M_DATEE, M_SERVICEID, M_DATED };
 
+	/**
+	 * Tableau de regex liés aux types
+	 */
+	private static String[] regex = { "^[a-zA-Z]{1}[0-9]{1,3}$", "[^0-9][A-Za-z-. '\\p{L}*]{1,30}$",
+			"[^0-9][A-Za-z-. '\\p{L}*]{1,30}$", "[A-Za-z0-9]{5,20}", "[A-Za-z0-9]{6,20}", ".{1,30}", "[0-9]{5}", "[A-Za-z-. '\\p{L}*]{1,30}",
+			"^[a-z0-9._-]+@[a-z0-9._-]{2,}\\.[a-z]{2,4}$", "^0[1-8][0-9]{8}$", "[0-9]{4}+-[0-9]{2}+-[0-9]{2}", "", "[0-9]{4}+-[0-9]{1,2}+-[0-9]{1,2}" };
+	
+	
+	/**
+	 * Retourne le regex du type recherché
+	 * 
+	 * @param type Type de valeur recherché
+	 * @return Regex du type recherché
+	 */
+	public static String getRegex(String type) {
+		String regle = null;
+		regle = regex[Information.getByType(type)];
+		return regle; 
+	}
+	
+	/**
+	 * Recherche l'id du type dans le tableau
+	 * 
+	 * @param type
+	 *            Libellé à rechercher
+	 * @return L'index du libellé dans le tableau des types
+	 */
 	public static int getByType(String type) {
 		for (int i = 0; i < types.length; i++) {
 			if (type.equals(types[i]))

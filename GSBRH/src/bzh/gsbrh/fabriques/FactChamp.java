@@ -51,7 +51,7 @@ public class FactChamp implements Lexique {
 			return new ChampDate(o, DATEE);
 		case DATED:
 			String valeur = LocalDate.now().toString();
-			return new ChampDate(o, M_PROGRAM_DATED, valeur, true);
+			return new ChampDate(o, DATED, valeur, true);
 		case SERVICE:
 			return new ChampBox(o, SERVICE);
 		case LOGINCO:

@@ -357,33 +357,12 @@ public class Controleur extends Thread implements Observateur, Lexique {
 	public void actualiser(Observable o, int code, Champ champ) {
 		String contenu;
 		switch (code) {
-		case COLOR_LOG:
-			String log = champ.getText();
-			if (!lesEmployes.verifLogin(log, unEmploye))
-				champ.setCouleur(false);
-			else
-				champ.setCouleur(true);
-			break;
-		case COLOR_MDP:
-			String mdp = champ.getText();
-			if (!lesEmployes.verifMdp(mdp))
-				champ.setCouleur(false);
-			else
-				champ.setCouleur(true);
-			break;
-		case COLOR_ID:
-			contenu = champ.getText();
-			if (!lesEmployes.verifId(contenu, unEmploye))
-				champ.setCouleur(false);
-			else
-				champ.setCouleur(true);
-			break;
 		case BO_DATE_NOW:
 			champ.setText(LocalDate.now().toString());
 			break;
 		case M_DATED:
 			contenu = formDate.formatDate(champ.getText());
-			if (lesEmployes.verifDate(contenu)) {
+			if (lesEmployes.verif(DATED, contenu, null)) {
 				unEmploye.getInfos(DATED).setValeur(contenu);
 				int[] codeModif = { M_DATED };
 				if (Requetes.modifierEmploye(unEmploye, codeModif) != 0) {
@@ -398,7 +377,7 @@ public class Controleur extends Thread implements Observateur, Lexique {
 		case PP_DATE_RE:
 			contenu = formDate.formatDate(champ.getText());
 			unEmploye.getInfos(DATED).setValeur(null);
-			if (((PopUp) o).valider(LI_CONFIRM_REINTEGRE) && lesEmployes.verifDate(contenu)) {
+			if (((PopUp) o).valider(LI_CONFIRM_REINTEGRE) && lesEmployes.verif(DATED, contenu, null)) {
 				unEmploye.getInfos(DATEE).setValeur(contenu);
 				int[] codeModif = { M_DATEE, M_DATED };
 				Requetes.modifierEmploye(unEmploye, codeModif);
@@ -406,7 +385,7 @@ public class Controleur extends Thread implements Observateur, Lexique {
 				principale.actualiserListeEmpActif(lesEmployes.getListe());
 				principale.actualiserListeEmpInactif(lesEmployes.getListeI());
 				((PopUp) o).setOk(true);
-			} else if (!lesEmployes.verifDate(contenu))
+			} else if (!lesEmployes.verif(DATED, contenu, null))
 				((PopUp) o).erreur();
 			break;
 
@@ -427,33 +406,11 @@ public class Controleur extends Thread implements Observateur, Lexique {
 			champ.setText(pass);
 			break;
 		case CHAMP_TEST:
-			String text = champ.getText();
-			int type = champ.getType();
-			switch (type) {
-			case CHAMP_TEXT:
-				if (!lesEmployes.verifText(text) && !text.isEmpty())
-					champ.setCouleur(false);
-				else
-					champ.setCouleur(true);
-				break;
-			case CHAMP_TEL:
-				if (!lesEmployes.verifTel(text) && !text.isEmpty()) {
-					champ.setCouleur(false);
-				} else {
-					champ.setCouleur(true);
-				}
-				break;
-			case CHAMP_CP:
-				if (!lesEmployes.verifCP(text) && !text.isEmpty()) {
-					champ.setCouleur(false);
-				} else {
-					champ.setCouleur(true);
-				}
-				break;
-			default:
-				break;
-			}
-
+			contenu = champ.getText();
+			if (!lesEmployes.verif(champ.getLabel().getText(), contenu, unEmploye) && !contenu.isEmpty())
+				champ.setCouleur(false);
+			else
+				champ.setCouleur(true);
 			break;
 		}
 	}

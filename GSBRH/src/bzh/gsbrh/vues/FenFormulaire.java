@@ -312,9 +312,7 @@ public class FenFormulaire extends Fenetre {
 	 *            Observable envoyant la notification d'evenement
 	 */
 	public void actualiser(Observable o) {
-		if (o == champs[0]) {
-			this.notifierObservateur(COLOR_ID, champs[0]);
-		} else if (o == champs[1] || o == champs[2]) {
+		if (o == champs[1] || o == champs[2]) {
 			if (!champs[2].getText().isEmpty() && !champs[1].getText().isEmpty()) {
 				Champ[] lesChamps = new Champ[3];
 				lesChamps[0] = champs[1];
@@ -322,11 +320,8 @@ public class FenFormulaire extends Fenetre {
 				lesChamps[2] = champs[3];
 				this.notifierObservateur(GENERE_LOG, lesChamps);
 			}
-		} else if (o == champs[3]) {
-			this.notifierObservateur(COLOR_LOG, champs[3]);
-		} else if (o == champs[4]) {
-			this.notifierObservateur(COLOR_MDP, champs[4]);
-		} else if (o instanceof Champ) {
+		} 
+		if (o instanceof Champ) {
 			this.notifierObservateur(CHAMP_TEST, (Champ) o);
 		}
 
