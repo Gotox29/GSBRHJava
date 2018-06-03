@@ -519,7 +519,7 @@ public class GestionEmploye implements Lexique {
 	 */
 	public boolean verifId(String id, Employe unEmploye) {
 		boolean flag = false;
-		if ((id.length() > 0 && id.length() <= 4) && (!idExiste(id) || id.equals(unEmploye.getInfos(ID).getValeur()))) {
+		if ((verif(ID,id,unEmploye)) && (!idExiste(id) || id.equals(unEmploye.getInfos(ID).getValeur()))) {
 			flag = true;
 		}
 		return flag;
@@ -586,7 +586,7 @@ public class GestionEmploye implements Lexique {
 	 */
 	public boolean verifLogin(String login) {
 		boolean flag = false;
-		if ((login.length() <= 20 && login.length() >= 5) && (!logExiste(login))) {
+		if ((verif(LOGIN,login,null)) && (!logExiste(login))) {
 			flag = true;
 		}
 		return flag;
@@ -604,7 +604,7 @@ public class GestionEmploye implements Lexique {
 	 */
 	public boolean verifLogin(String login, Employe unEmploye) {
 		boolean flag = false;
-		if ((login.length() <= 20 && login.length() >= 5)
+		if ((verif(LOGIN,login,unEmploye))
 				&& (!logExiste(login) || login.equals(unEmploye.getInfos(LOGIN).getValeur()))) {
 			flag = true;
 		}
