@@ -92,6 +92,9 @@ public class GestionEmploye implements Lexique {
 		genererListe();
 	}
 
+	/**
+	 * Constructeur par defaut privée
+	 */
 	private GestionEmploye() {
 
 	}
@@ -126,6 +129,11 @@ public class GestionEmploye implements Lexique {
 		return moi;
 	}
 
+	/**
+	 * Met a jour la liste des employés
+	 * 
+	 * @param lesEmployes Nouvelle collection des employés
+	 */
 	public void setListe(ArrayList<Employe> lesEmployes) {
 		if (lesEmployes != null)
 			listeEmployes = lesEmployes;
@@ -417,6 +425,11 @@ public class GestionEmploye implements Lexique {
 		return liste;
 	}
 
+	/**
+	 * Accesseur du tableau des services.
+	 * 
+	 * @return Le tableau des services.
+	 */
 	public String[] listerServices() {
 		return lesServices;
 
@@ -660,90 +673,6 @@ public class GestionEmploye implements Lexique {
 			temp = formaterLog(log, i);
 		return temp;
 	}
-
-	// /**
-	// * Vérifie le texte passé en paramète.
-	// *
-	// * @param text
-	// * Le texte à verifier.
-	// * @return Un booléen qui confirme ou non que le texte est conforme.
-	// */
-	// public boolean verifText(String text) {
-	// boolean flag = false;
-	// if (!text.isEmpty() && text.length() <= 30) {
-	// flag = true;
-	// }
-	// return flag;
-	// }
-	//
-	// /**
-	// * Vérifie le teléphone passé en paramètre.
-	// *
-	// * @param tel
-	// * Numéro de téléphone à vérifier.
-	// * @return Un booléen qui confirme ou non que le téléphone est conforme.
-	// */
-	// public boolean verifTel(String tel) {
-	// boolean flag = false;
-	// if (!tel.isEmpty() && tel.length() == 10) {
-	// flag = true;
-	// }
-	// return flag;
-	// }
-	//
-	// /**
-	// * Vérifie si le mot de passe est conforme.
-	// *
-	// * @param mdp
-	// * Mot de passe à vérifier.
-	// * @return Un booléen qui confirme ou non que le mot de passe est conforme.
-	// */
-	// public boolean verifMdp(String mdp) {
-	// boolean flag = false;
-	// if (mdp.length() <= 20 && mdp.length() > 6) {
-	// flag = true;
-	// }
-	// return flag;
-	// }
-	//
-	// /**
-	// * Vérifie si le code postal est conforme.
-	// *
-	// * @param cp
-	// * Code postal à vérifier.
-	// * @return Un booléen qui confirme ou non que le code postal est conforme.
-	// */
-	// public boolean verifCP(String cp) {
-	// boolean flag = false;
-	// if (cp.length() == 5) {
-	// flag = true;
-	// }
-	// return flag;
-	// }
-	//
-	// /**
-	// * Verifie si la date est conforme.
-	// *
-	// * @param date
-	// * Date à vérifier.
-	// * @return Un booléen qui confirme ou non que la date est conforme.
-	// */
-	// public boolean verifDate(String date) {
-	// boolean flag = false;
-	// String[] dates = date.split("-");
-	// if (dates.length < 3)
-	// return false;
-	// int jours = Integer.parseInt(dates[2]);
-	// int mois = Integer.parseInt(dates[1]);
-	// int annees = Integer.parseInt(dates[0]);
-	// try {
-	// LocalDate.of(annees, mois, jours);
-	// flag = true;
-	// } catch (Exception e) {
-	// flag = false;
-	// }
-	// return flag;
-	// }
 
 	/**
 	 * Verifie une valeur en fonction de son type. Le programme va cherché le regex

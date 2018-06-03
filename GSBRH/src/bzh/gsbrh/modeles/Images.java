@@ -17,52 +17,52 @@ import javax.swing.ImageIcon;
  */
 public enum Images {
 	/**
-	 * Emplacement du logo/icone de l'application
+	 * nom et extension du logo/icone de l'application
 	 */
 	LOGO("logo.png"),
 
 	/**
-	 * Emplacement de l'image retour
+	 * nom et extension de l'image retour
 	 */
 	RETOUR("retour.png"),
 
 	/**
-	 * Emplacement de l'image ajouter
+	 * nom et extension de l'image ajouter
 	 */
 	AJOUTER("ajouter.png"),
 
 	/**
-	 * Emplacement de l'image deconnexion
+	 * nom et extension de l'image deconnexion
 	 */
 	DECONNECT("deconnexion.png"),
 
 	/**
-	 * Emplacement de l'image aléatoire
+	 * nom et extension de l'image aléatoire
 	 */
 	ALEATOIR("alea.png"),
 
 	/**
-	 * Emplacement de l'image valider
+	 * nom et extension de l'image valider
 	 */
 	VALIDER("valider.png"),
 
 	/**
-	 * Emplacement de l'image réinitialiser
+	 * nom et extension de l'image réinitialiser
 	 */
 	REINIT("reinit.png"),
 
 	/**
-	 * Emplacement de l'image connexion
+	 * nom et extension de l'image connexion
 	 */
 	CONNECT("connexion.png"),
 
 	/**
-	 * Emplacement de l'image modifier
+	 * nom et extension de l'image modifier
 	 */
 	MODIFIE("modifier.png"),
 
 	/**
-	 * Emplacement de l'image programmation
+	 * nom et extension de l'image programmation
 	 */
 	PROGRAM("programme.png");
 
@@ -89,7 +89,7 @@ public enum Images {
 	/**
 	 * Constructeur privée de l'enumération
 	 * 
-	 * @param value valeur de la constante de l'enumération demandé
+	 * @param value Valeur de la constante de l'enumération demandé
 	 */
 	private Images(String value) {
 		this.value = value;

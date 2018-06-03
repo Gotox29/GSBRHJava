@@ -127,11 +127,6 @@ public class Controleur extends Thread implements Observateur, Lexique {
 		unEmploye = new Employe();
 		if (fenetre != null)
 			fenetre.setVisible(false);
-		// if (this.principale == null) {
-		// this.principale = FactFenetre.fabriqueFenetre(this, FE_LISTE,
-		// lesEmployes.getListe(),
-		// lesEmployes.getListeI(), lesEmployes.getEntete());
-		// }
 		this.principale.setVisible(true);
 
 	}
@@ -463,6 +458,7 @@ public class Controleur extends Thread implements Observateur, Lexique {
 					}
 					break;
 				// Ajout d'un employé
+					
 				case FO_AJOUT:
 					if (Requetes.ajouterEmploye(employe) == 1) {
 						lesEmployes.ajouterEmploye(employe);

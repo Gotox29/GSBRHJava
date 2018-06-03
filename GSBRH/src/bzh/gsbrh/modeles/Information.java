@@ -3,9 +3,16 @@ package bzh.gsbrh.modeles;
 import bzh.gsbrh.observateurs.Lexique;
 
 /**
+ * <p>
  * Classe permettant de générer une information d'un type définit. Représente
  * une information sur un employé. Simplifie l'ecriture et la lecture des
  * informations.
+ * </p>
+ * <p>
+ * A chaque type est associé une expression régulière(regex) permettant de
+ * vérifier automatiquement si la valeur de l'information coresspond a la norme
+ * du type qui lui est associé.
+ * </p>
  * 
  * @author Anthony Nizac
  * @version 1.0

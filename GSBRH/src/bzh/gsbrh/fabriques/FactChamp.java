@@ -34,13 +34,6 @@ public class FactChamp implements Lexique {
 		switch (text) {
 		case ID:
 			return new ChampID(o, ID);
-		case NOM:
-		case PRENOM:
-		case LOGIN:
-		case ADR:
-		case VILLE:
-		case MAIL:
-			return new Champ(o, text, CHAMP_TEXT, false);
 		case MDP:
 			return new ChampPass(o, MDP, true);
 		case CP:
@@ -58,10 +51,15 @@ public class FactChamp implements Lexique {
 			return new Champ(o, LOGINCO, CHAMP_TEXT, true);
 		case MDPCO:
 			return new ChampPass(o, MDPCO, false);
-
-		// return new ChampMail(o,text);
+		case NOM:
+		case PRENOM:
+		case LOGIN:
+		case ADR:
+		case VILLE:
+		case MAIL:
+			return new Champ(o, text, CHAMP_TEXT, false);
+		default:
+			return null;
 		}
-
-		return null;
 	}
 }

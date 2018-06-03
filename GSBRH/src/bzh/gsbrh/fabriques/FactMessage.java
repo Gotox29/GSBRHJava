@@ -111,6 +111,8 @@ public class FactMessage implements Lexique {
 		case ID_ERREUR_COBDD:
 			JOptionPane.showMessageDialog(null, M_ERREUR_COBDD, M_TITRE_E, JOptionPane.ERROR_MESSAGE);
 			break;
+		default:
+			return confirm;
 		}
 
 		return confirm;

@@ -27,7 +27,6 @@ public class ZModel extends AbstractTableModel {
 	 */
 	private Entete title;
 
-	// Constructeur
 	/**
 	 * Constructeur surchargé
 	 * 
@@ -98,7 +97,6 @@ public class ZModel extends AbstractTableModel {
 	 * Retourne la classe de la donnée de la colonne
 	 */
 	public Class<? extends Object> getColumnClass(int col) {
-		// return null;
 		// On retourne le type de la cellule à la colonne demandée
 
 		// On se moque de la ligne puisque les types de données sont les mêmes quelle

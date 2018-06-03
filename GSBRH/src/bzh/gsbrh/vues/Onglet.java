@@ -102,7 +102,7 @@ public class Onglet extends Panneau {
 		model = new ZModel(liste, entete) {
 
 			/**
-			 * 
+			 * Clé de hachage de la classe.
 			 */
 			private static final long serialVersionUID = -7155865294622073231L;
 
