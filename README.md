@@ -1,6 +1,6 @@
 # Application GSBRH
 
-Autheur : __Anthony Nizac__
+Auteur : __Anthony Nizac__
 
 [Projet Github de l'application](https://github.com/Gotox29/Java "Projet Github")
 
