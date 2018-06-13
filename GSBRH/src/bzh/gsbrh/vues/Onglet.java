@@ -1,11 +1,14 @@
 package bzh.gsbrh.vues;
 
+import java.util.ArrayList;
+
 import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.SpringLayout;
 
+import bzh.gsbrh.modeles.Employe;
 import bzh.gsbrh.modeles.Entete;
 import bzh.gsbrh.observateurs.Observateur;
 import bzh.gsbrh.observateurs.Panneau;
@@ -41,7 +44,7 @@ public class Onglet extends Panneau {
 	/**
 	 * Liste des employés à intégrer dans le tableau
 	 */
-	private Object[][] liste;
+	private ArrayList<Employe> liste;
 
 	/**
 	 * Entete du tableau d'employés
@@ -60,12 +63,39 @@ public class Onglet extends Panneau {
 	 * @param entete
 	 *            Entête du tableau
 	 */
-	public Onglet(Observateur o, SpringLayout layout, Object[][] liste, Entete entete) {
+	public Onglet(Observateur o, SpringLayout layout, ArrayList<Employe> liste, Entete entete) {
 		super(o, layout);
 		this.liste = liste;
 		this.entete = entete;
 		creerTableau();
+	}
+	
+	/**
+	 * Constructeur surchargé
+	 * 
+	 * @param o
+	 *            Observateur par defaut
+	 * @param layout
+	 *            Gestionnaire de mise en forme par défaut
+	 * @param liste
+	 *            Liste à intégrer dans le tableau
+	 * @param entete
+	 *            Entête du tableau
+	 */
+	public Onglet(Observateur o, SpringLayout layout, Object[][] liste, Entete entete) {
+		super(o, layout);
 
+		this.entete = entete;
+		model = new Model(liste, entete) {
+			/**
+			 * Clé de hachage de la classe.
+			 */
+			private static final long serialVersionUID = -7155865294622073231L;
+			public boolean isCellEditable(int row, int column) {
+				return (column == entete.indiceDEntete(CONSULTER) || column == entete.indiceDEntete(COLMODIFIE) || column == entete.indiceDEntete(PP_DATE_TX));
+			}
+		};
+		creerTableau();
 	}
 
 	/**
@@ -83,9 +113,8 @@ public class Onglet extends Panneau {
 	 * @param liste
 	 *            Nouvelle liste à afficher
 	 */
-	public void actualiserListeEmploye(Object[][] liste) {
+	public void actualiserListeEmploye(ArrayList<Employe> liste) {
 		this.liste = liste;
-		entete.ajouterElements(this.liste);
 		model.setData(this.liste);
 		try {
 			model.modifierEmploye();
@@ -98,19 +127,19 @@ public class Onglet extends Panneau {
 	 * Lance la création du tableau
 	 */
 	public void creerTableau() {
-		entete.ajouterElements(liste);
-		model = new ZModel(liste, entete) {
-
-			/**
-			 * Clé de hachage de la classe.
-			 */
-			private static final long serialVersionUID = -7155865294622073231L;
-
-			public boolean isCellEditable(int row, int column) {
-
-				return (column == entete.indiceDEntete(COLMODIFIE) || column == entete.indiceDEntete(PP_DATE_TX));
-			}
-		};
+		if(model == null)
+			model = new ZModel(liste, entete) {
+	
+				/**
+				 * Clé de hachage de la classe.
+				 */
+				private static final long serialVersionUID = -7155865294622073231L;
+	
+				public boolean isCellEditable(int row, int column) {
+	
+					return (column == entete.indiceDEntete(CONSULTER) || column == entete.indiceDEntete(COLMODIFIE) || column == entete.indiceDEntete(PP_DATE_TX));
+				}
+			};
 
 		table = new JTable(model);
 		table.getTableHeader().setBackground(COLOR_BOUTON_VALIDER);
@@ -118,17 +147,24 @@ public class Onglet extends Panneau {
 		table.setAutoCreateRowSorter(true);
 		table.setRowHeight(30);
 		table.setGridColor(COLOR_BORDER);
-
+		
 		table.setDefaultRenderer(JComponent.class, new TableComponent());
+		
+		appliquerRender();
+
+		scrollpane = new JScrollPane(table);
+
+	}
+	
+	public void appliquerRender() {
 		// Place en ecoute les colonnes avec des boutons grace au methodes de
 		// ClientsTableRenderer
 		table.getColumnModel().getColumn(entete.indiceDEntete(COLMODIFIE))
 				.setCellEditor(new ClientsTableRenderer(new JCheckBox(), this, entete));
 		table.getColumnModel().getColumn(entete.indiceDEntete(PP_DATE_TX))
 				.setCellEditor(new ClientsTableRenderer(new JCheckBox(), this, entete));
-
-		scrollpane = new JScrollPane(table);
-
+		table.getColumnModel().getColumn(entete.indiceDEntete(CONSULTER))
+				.setCellEditor(new ClientsTableRenderer(new JCheckBox(), this, entete));
 	}
 
 }

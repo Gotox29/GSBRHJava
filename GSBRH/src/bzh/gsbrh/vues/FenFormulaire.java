@@ -83,8 +83,10 @@ public class FenFormulaire extends Fenetre {
 	/**
 	 * Unique instance du formulaire
 	 */
-	private static FenFormulaire moi;
+	protected static FenFormulaire moi;
 
+	
+	
 	/**
 	 * Constructeur privé d'une fenetre de formulaire pour ajouter ou modifier un
 	 * employé passé en paramètre
@@ -96,7 +98,7 @@ public class FenFormulaire extends Fenetre {
 	 * @param employe
 	 *            Employé à modifier, il sera vide si c'est un nouvel employé
 	 */
-	private FenFormulaire(String titre, Observateur o, Employe employe) {
+	protected FenFormulaire(String titre, Observateur o, Employe employe) {
 		super(titre, o);
 		unEmploye = employe;
 		fermeture = 1;
@@ -122,6 +124,7 @@ public class FenFormulaire extends Fenetre {
 			moi = new FenFormulaire(titre, o, employe);
 		else
 			moi.setForm(employe, titre);
+		moi.debloquerChamps();
 		return moi;
 	}
 
@@ -165,6 +168,23 @@ public class FenFormulaire extends Fenetre {
 			employe.getInfos(i).setValeur(champs[i].getText());
 		}
 		return employe;
+	}
+	
+	public void bloquerChamps() {
+		for (int i = 0; i < Information.getTypes().length - 1; i++) {
+			champs[i].bloquerChamp();
+		}
+		contentPane.remove(valider);
+		contentPane.remove(reinitialise);
+	}
+	
+	public void debloquerChamps() {
+		for (int i = 1; i < Information.getTypes().length - 1; i++) {
+			champs[i].deBloquerChamp();
+		}
+		contentPane.add(valider);
+		contentPane.add(reinitialise);
+		placerBouton();
 	}
 
 	/**
@@ -257,6 +277,10 @@ public class FenFormulaire extends Fenetre {
 		layout.putConstraint(SpringLayout.WEST, intro, 50, SpringLayout.WEST, contentPane);
 		layout.putConstraint(SpringLayout.NORTH, intro, yTitre, SpringLayout.NORTH, contentPane);
 
+		placerBouton();
+	}
+	
+	public void placerBouton() {
 		layout.putConstraint(SpringLayout.EAST, valider, -20, SpringLayout.HORIZONTAL_CENTER, contentPane);
 		layout.putConstraint(SpringLayout.BASELINE, valider, yValide, SpringLayout.SOUTH, contentPane);
 

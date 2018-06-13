@@ -4,6 +4,7 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.regex.Pattern;
 
 /**
  * Formate et effectue des tests sur des dates.
@@ -64,18 +65,28 @@ public class formDate {
 		int jours = 0;
 		int mois = 0;
 		int annees = 0;
-		if (!(date.equals(""))) {
+		if (!(date.equals("")) && !estAffichable(date)) {
 			String[] dates = date.split("-");
-			if (!dates[0].isEmpty())
-				annees = Integer.parseInt(dates[0]);
-			if (!dates[1].isEmpty())
-				mois = Integer.parseInt(dates[1]);
-			if (!dates[2].isEmpty())
-				jours = Integer.parseInt(dates[2]);
-			date = formaterMJ.format(jours) + "-" + formaterMJ.format(mois) + "-" + formaterAN.format(annees);
+			if (dates.length != 1) {
+				if (!dates[0].isEmpty())
+					annees = Integer.parseInt(dates[0]);
+				if (!dates[1].isEmpty())
+					mois = Integer.parseInt(dates[1]);
+				if (!dates[2].isEmpty())
+					jours = Integer.parseInt(dates[2]);
+				date = formaterMJ.format(jours) + "-" + formaterMJ.format(mois) + "-" + formaterAN.format(annees);
+			}
 		}
 		return date;
 
+	}
+	
+	public static boolean estAffichable(String date) {
+		if (Pattern.matches("[0-9]{1,2}+-[0-9]{1,2}+-(19|20)[0-9]{2}", date)) {
+			return true;
+		}
+		return false;
+		
 	}
 
 	/**

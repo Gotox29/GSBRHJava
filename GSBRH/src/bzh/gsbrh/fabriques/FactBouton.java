@@ -35,6 +35,8 @@ public class FactBouton implements Lexique {
 	 */
 	public static Bouton fabriqueBouton(Observateur o, int type, ImageIcon image) {
 		switch (type) {
+		case BO_CONSULT:
+			return new Bouton(o, CONSULTER, LI_AF, image);
 		case BO_CONNECT:
 			return new Bouton(o, BOUTON_CONNE, ID_CO, image);
 		case BO_DECONNECT:

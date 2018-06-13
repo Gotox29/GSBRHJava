@@ -80,5 +80,16 @@ public class ChampBox extends Champ {
 	public void setBox(Object item) {
 		this.box.addItem(item);
 	}
+	
+	public void bloquerChamp() {
+		box.setEditable(false);
+		box.setEnabled(false);
+		box.setBackground(COLOR_TEXT_WHITE);
+	}
 
+	public void deBloquerChamp() {
+		box.setEditable(true);
+		box.setEnabled(true);
+		box.setBackground(COLOR_TEXT_WHITE);
+	}
 }

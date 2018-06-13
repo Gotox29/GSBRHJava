@@ -38,7 +38,7 @@ public class ChampPass extends Champ implements DocumentListener, FocusListener 
 	 * Bouton permettant de generer un mot de passe dans la zone de saisie de
 	 * password
 	 */
-	private Bouton generer;
+	private Bouton generer = null;
 
 	/**
 	 * Zone de saisie de password
@@ -99,11 +99,15 @@ public class ChampPass extends Champ implements DocumentListener, FocusListener 
 
 	public void bloquerChamp() {
 		pass.setEditable(false);
+		if(generer != null)
+			generer.setEnabled(false);
 		pass.setBackground(COLOR_TEXT_NULL);
 	}
 
 	public void deBloquerChamp() {
 		pass.setEditable(true);
+		if(generer != null)
+			generer.setEnabled(true);
 		pass.setBackground(COLOR_TEXT_WHITE);
 	}
 

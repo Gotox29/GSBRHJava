@@ -857,4 +857,10 @@ public interface Lexique {
 	 */
 	final public static String MAIL_DOMAINE = "@swiss-galaxy.com";
 
+	public static final int LI_AF = 70;
+
+	public static final String CONSULTER = "Consulter";
+
+	public static final int BO_CONSULT = 6;
+
 }

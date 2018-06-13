@@ -124,7 +124,11 @@ public class ClientsTableRenderer extends EditeurCellule implements Lexique {
 			if (new String(label).equals(BOUTON_MODIF)) {
 				notifierObservateur(id, LI_MO);
 			}
-
+			
+			if (new String(label).equals(CONSULTER)) {
+				notifierObservateur(id, LI_AF);
+			}
+			
 			if (new String(label).equals(BOUTON_SUPPR)) {
 				notifierObservateur(id, LI_PR);
 			}

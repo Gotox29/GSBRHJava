@@ -212,6 +212,82 @@ public class Requetes implements Lexique {
 
 		return liste;
 	}
+	
+	/**
+	 * cherche en base de données la liste des services
+	 * 
+	 * @return liste des libelles des services
+	 */
+	public static String[][] listerTable(String where, String from, String order, String...select) {
+		String[][] liste = null;
+		String selection = "";
+		if (ConnexionEtablie()) {
+			try {
+				ArrayList<String> column = new ArrayList<String>();
+				// Création d'un objet Statement
+				requete = ConnexionBDD.getInstance().createStatement();
+				if(select.length != 1 && !select[0].equals("*")) {
+					for(int i = 0; i < select.length; i++) {
+						selection = selection + select[i];
+						String[] decoupe = select[i].split(" as ");
+						if(decoupe.length != 1) {
+							column.add(decoupe[1]);
+						}else
+							column.add(decoupe[0]);
+						if(i != select.length-1)
+							selection = selection +", ";
+					}
+				}else {
+					selection = "*";
+				}
+				// L'objet ResultSet contient le résultat de la requête SQL
+				System.out.println("SELECT "+ selection +" FROM " + from + " " + where + " ORDER BY "+order+";");
+				resultat = requete.executeQuery("SELECT "+ selection +" FROM " + from + " " + where + " ORDER BY "+order+";");
+				int col = 0;
+				
+				if(column.size() != 0) {
+					col = column.size();
+				}else {
+					metad = ConnexionBDD.getInstance().getMetaData();
+					champTable = metad.getColumns(null, null, from, null);
+					// L'objet ResultSet contient le résultat de la requête SQL
+	
+					champTable.last();
+					col = champTable.getRow();
+					champTable.beforeFirst();
+				}
+				resultat.last();
+				
+				int row = resultat.getRow();
+				resultat.first();
+				
+				liste = new String[row][col];
+				for (int i = 0; i < row; i++) {
+					int j = 0;
+					if(column.size() != 0) {
+						for(j = 0; j < column.size(); j++)
+							liste[i][j] = resultat.getString(column.get(j));
+							
+					}
+					else {
+						while (champTable.next()) {
+							liste[i][j] = resultat.getString(champTable.getString("COLUMN_NAME"));
+							j++;
+						}
+					}
+					champTable.beforeFirst();
+					resultat.next();
+				}
+
+			} catch (SQLException | ClassNotFoundException e) {
+				e.printStackTrace();
+			} finally {
+				close();
+			}
+		}
+
+		return liste;
+	}
 
 	/**
 	 * Modifie un employé.

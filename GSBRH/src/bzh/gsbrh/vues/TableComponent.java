@@ -29,7 +29,6 @@ public class TableComponent extends DefaultTableCellRenderer {
 		// Si la valeur de la cellule est un Nouton, on transtype cette valeur
 		if (value instanceof Bouton)
 			return (Bouton) value;
-
 		else
 			return this;
 	}

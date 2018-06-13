@@ -35,17 +35,17 @@ public class GestionEmploye implements Lexique {
 	/**
 	 * Tableau des employés actifs.
 	 */
-	private Object[][] liste;
+	private ArrayList<Employe> liste;
 
 	/**
 	 * Tableau des employés inacifs.
 	 */
-	private Object[][] listeI;
+	private ArrayList<Employe> listeI;
 
 	/**
 	 * Entêtes des colonnes du tabeau a afficher.
 	 */
-	private Entete entete = new Entete();
+	private Entete entete = new Entete();;
 
 	/**
 	 * Tableaux des libellés des services.
@@ -73,11 +73,6 @@ public class GestionEmploye implements Lexique {
 	private boolean inverse = false;
 
 	/**
-	 * Unique instance de GestionEmploye
-	 */
-	private static GestionEmploye moi = null;
-
-	/**
 	 * Compte les employé actif et inactif, puis converti la collection.
 	 */
 	private void importerListe() {
@@ -95,7 +90,7 @@ public class GestionEmploye implements Lexique {
 	/**
 	 * Constructeur par defaut privée
 	 */
-	private GestionEmploye() {
+	public GestionEmploye() {
 
 	}
 
@@ -107,27 +102,45 @@ public class GestionEmploye implements Lexique {
 	 * @param services
 	 *            Tableau des libellés des services.
 	 */
-	private GestionEmploye(ArrayList<Employe> lesEmployes, String[] services) {
+	public GestionEmploye(ArrayList<Employe> lesEmployes, String[] services, Entete entete) {
 		listeEmployes = lesEmployes;
 		lesServices = services;
+		this.entete = entete;
+		codeComp = 0;
+		this.entete.setLesServices(lesServices);
 		importerListe();
 	}
-
+	
 	/**
-	 * Méthode singleton pour instancier l'unique instance de GestionEmploye
-	 * 
+	 * Constructeur privé surchargé.
+	 *
 	 * @param lesEmployes
 	 *            Collection d'employé.
 	 * @param services
 	 *            Tableau des libellés des services.
-	 * @return L'unique instance de GestionEmploye
 	 */
-	public static GestionEmploye gestionEmploye(ArrayList<Employe> lesEmployes, String[] services) {
-		if (moi == null && lesEmployes != null) {
-			moi = new GestionEmploye(lesEmployes, services);
-		}
-		return moi;
+	public GestionEmploye(ArrayList<Employe> lesEmployes, String[] services) {
+		listeEmployes = lesEmployes;
+		lesServices = services;
+		entete.setLesServices(lesServices);
+		importerListe();
 	}
+
+//	/**
+//	 * Méthode singleton pour instancier l'unique instance de GestionEmploye
+//	 * 
+//	 * @param lesEmployes
+//	 *            Collection d'employé.
+//	 * @param services
+//	 *            Tableau des libellés des services.
+//	 * @return L'unique instance de GestionEmploye
+//	 */
+//	public static GestionEmploye gestionEmploye(ArrayList<Employe> lesEmployes, String[] services) {
+//		if (moi == null && lesEmployes != null) {
+//			moi = new GestionEmploye(lesEmployes, services);
+//		}
+//		return moi;
+//	}
 
 	/**
 	 * Met a jour la liste des employés
@@ -171,40 +184,42 @@ public class GestionEmploye implements Lexique {
 	 * @param t
 	 *            Indice de l'employé dans la liste des employés
 	 */
-	public void genererListe(ArrayList<Employe> listeEmployes, Object[][] liste, int i, int t) {
-		int u = 0;
-		for (int j = 0; j < Information.getTypes().length; j++) {
-			u = entete.indiceDEntete(listeEmployes.get(t).getInfos(j).getType());
-			if (listeEmployes.get(t).getInfos(j).getType().equals(entete.getEntete()[u])) {
-				if (listeEmployes.get(t).getInfos(j).getType().equals(SERVICE))
-					liste[i][u] = lesServices[Integer.parseInt(listeEmployes.get(t).getInfos(j).getValeur())];
-				else if (listeEmployes.get(t).getInfos(j).getType().equals(DATED)
-						|| listeEmployes.get(t).getInfos(j).getType().equals(DATEE))
-					liste[i][u] = formDate.dateAffichable(listeEmployes.get(t).getInfos(j).getValeur());
-				else
-					liste[i][u] = listeEmployes.get(t).getInfos(j).getValeur();
-				u++;
-			}
-		}
-	}
+//	public void genererListe(ArrayList<Employe> listeEmployes, ArrayList<Employe> liste, int i, int t) {
+//		int u = 0;
+//		for (int j = 0; j < Information.getTypes().length; j++) {
+//			u = entete.indiceDEntete(listeEmployes.get(t).getInfos(j).getType());
+//			if (listeEmployes.get(t).getInfos(j).getType().equals(entete.getEntete()[u])) {
+//				if (listeEmployes.get(t).getInfos(j).getType().equals(SERVICE))
+//					liste[i][u] = lesServices[Integer.parseInt(listeEmployes.get(t).getInfos(j).getValeur())];
+//				else if (listeEmployes.get(t).getInfos(j).getType().equals(DATED)
+//						|| listeEmployes.get(t).getInfos(j).getType().equals(DATEE))
+//					liste[i][u] = formDate.dateAffichable(listeEmployes.get(t).getInfos(j).getValeur());
+//				else
+//					liste[i][u] = listeEmployes.get(t).getInfos(j).getValeur();
+//				u++;
+//			}
+//		}
+//	}
 
 	/**
 	 * Genère un tableau des employé actif et un des employé inactif.
 	 */
 	public void genererListe() {
-		liste = new Object[rowActif][entete.getEntete().length];
-		listeI = new Object[rowInactif][entete.getEntete().length];
-		int i = 0;
-		int a = 0;
+		liste = new ArrayList<Employe>();
+		listeI = new ArrayList<Employe>();
+//		int i = 0;
+//		int a = 0;
 		// Boucle qui génère les employés un à un
 		for (int t = 0; t < listeEmployes.size(); t++) {
 			if (formDate.dateDepasse(listeEmployes.get(t).getInfos(DATED).getValeur())
 					&& !listeEmployes.get(t).getInfos(DATED).getValeur().isEmpty()) {
-				genererListe(listeEmployes, listeI, i, t);
-				i++;
+				listeI.add(listeEmployes.get(t));
+//				genererListe(listeEmployes, listeI, i, t);
+//				i++;
 			} else {
-				genererListe(listeEmployes, liste, a, t);
-				a++;
+				liste.add(listeEmployes.get(t));
+//				genererListe(listeEmployes, liste, a, t);
+//				a++;
 			}
 		}
 		triRapide(liste, codeComp, inverse);
@@ -221,8 +236,8 @@ public class GestionEmploye implements Lexique {
 	 * @param inverse
 	 *            Booléen indiquant si le tri doit être croisant ou non.
 	 */
-	public void triRapide(Object[][] liste, int codeComp, boolean inverse) {
-		int longueur = liste.length;
+	public void triRapide(ArrayList<Employe> liste, int codeComp, boolean inverse) {
+		int longueur = liste.size();
 		triRapide(liste, 0, longueur - 1, codeComp, inverse);
 	}
 
@@ -240,7 +255,7 @@ public class GestionEmploye implements Lexique {
 	 * @param inverse
 	 *            Booléen indiquant si le tri doit être croisant ou non.
 	 */
-	public void triRapide(Object[][] liste, int debut, int fin, int codeComp, boolean inverse) {
+	public void triRapide(ArrayList<Employe> liste, int debut, int fin, int codeComp, boolean inverse) {
 		if (debut < fin) {
 			int positionPivot = partition(liste, debut, fin, codeComp, inverse);
 			triRapide(liste, debut, positionPivot - 1, codeComp, inverse);
@@ -263,17 +278,17 @@ public class GestionEmploye implements Lexique {
 	 *            Booléen indiquant si le tri doit être croisant ou non.
 	 * @return L'index de la valeur la plus forte rencontré dans le test.
 	 */
-	public int partition(Object[][] liste, int debut, int fin, int codeComp, boolean inverse) {
+	public int partition(ArrayList<Employe> liste, int debut, int fin, int codeComp, boolean inverse) {
 		int compt = debut;
-		Object pivot = ((String) liste[debut][codeComp]).toLowerCase();
+		Object pivot = ((String) liste.get(debut).getInfos(codeComp).getValeur()).toLowerCase();
 		for (int i = debut + 1; i <= fin; i++) {
 			if (inverse) {
-				if ((((String) liste[i][codeComp]).toLowerCase()).compareTo((String) pivot) > 0) {
+				if ((((String) liste.get(i).getInfos(codeComp).getValeur()).toLowerCase()).compareTo((String) pivot) > 0) {
 					compt++;
 					echanger(liste, compt, i);
 				}
 			} else {
-				if (-(((String) liste[i][codeComp]).toLowerCase()).compareTo((String) pivot) > 0) {
+				if (-(((String) liste.get(i).getInfos(codeComp).getValeur()).toLowerCase()).compareTo((String) pivot) > 0) {
 					compt++;
 					echanger(liste, compt, i);
 				}
@@ -293,11 +308,11 @@ public class GestionEmploye implements Lexique {
 	 * @param b
 	 *            Index de la ligne seconde à remplacer.
 	 */
-	public void echanger(Object[][] liste, int a, int b) {
-		Object[][] temp = new Object[1][entete.getEntete().length];
-		temp[0] = liste[b];
-		liste[b] = liste[a];
-		liste[a] = temp[0];
+	public void echanger(ArrayList<Employe> liste, int a, int b) {
+		ArrayList<Employe> temp = new ArrayList<Employe>();
+		temp.add(liste.get(b));
+		liste.set(b, liste.get(a));
+		liste.set(a, temp.get(0));
 	}
 
 	/**
@@ -376,22 +391,15 @@ public class GestionEmploye implements Lexique {
 	 * @param indice
 	 *            L'indice de l'employé dans le tableau à modifier
 	 */
-	public void modifier(Employe unNouvelEmploye, int[] codesModif, Object[][] uneListe, int index, int indice) {
+	public void modifier(Employe unNouvelEmploye, int[] codesModif, ArrayList<Employe> uneListe, int index, int indice) {
 		for (int i = 0; i < codesModif.length; i++) {
 			for (int j = 0; j < Information.getCodeModif().length; j++) {
 				if (codesModif[i] == Information.getCodeModif(j)) {
 					listeEmployes.get(index).getInfos(j).setValeur(unNouvelEmploye.getInfos(j).getValeur());
-					int u = entete.indiceDEntete(listeEmployes.get(index).getInfos(j).getType());
+					//int u = entete.indiceDEntete(listeEmployes.get(index).getInfos(j).getType());
 					if (!listeEmployes.get(index).getInfos(j).getType().equals(MDP)
 							&& entete.estDansEntete(listeEmployes.get(index).getInfos(j).getType())) {
-						if (listeEmployes.get(index).getInfos(j).getType().equals(SERVICE))
-							uneListe[indice][u] = lesServices[Integer
-									.parseInt(unNouvelEmploye.getInfos(j).getValeur())];
-						else if (listeEmployes.get(index).getInfos(j).getType().equals(DATEE)
-								|| listeEmployes.get(index).getInfos(j).getType().equals(DATED))
-							uneListe[indice][u] = formDate.dateAffichable(unNouvelEmploye.getInfos(j).getValeur());
-						else
-							uneListe[indice][u] = unNouvelEmploye.getInfos(j).getValeur();
+							uneListe.get(indice).getInfos(j).setValeur(unNouvelEmploye.getInfos(j).getValeur());
 					}
 				}
 			}
@@ -412,7 +420,7 @@ public class GestionEmploye implements Lexique {
 	 * 
 	 * @return Le tableau des employés inactif.
 	 */
-	public Object[][] getListeI() {
+	public ArrayList<Employe> getListeI() {
 		return listeI;
 	}
 
@@ -421,7 +429,7 @@ public class GestionEmploye implements Lexique {
 	 * 
 	 * @return Le tableau des employés actif.
 	 */
-	public Object[][] getListe() {
+	public ArrayList<Employe> getListe() {
 		return liste;
 	}
 
@@ -474,11 +482,11 @@ public class GestionEmploye implements Lexique {
 	 *            Liste sur laquel rechercher l'employé.
 	 * @return L'indice de l'employé dans le tableau passé en paramètre.
 	 */
-	public int getIndexListe(String id, Object[][] liste) {
-		int size = liste.length;
+	public int getIndexListe(String id, ArrayList<Employe> liste) {
+		int size = liste.size();
 		int index = 0;
 		for (int i = 0; i < size; i++) {
-			if (liste[i][0].equals(id)) {
+			if (liste.get(i).getInfos(ID).getValeur().equals(id)) {
 				index = i;
 			}
 		}

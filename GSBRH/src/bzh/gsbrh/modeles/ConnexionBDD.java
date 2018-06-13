@@ -11,7 +11,7 @@ import java.sql.SQLException;
  * 
  * @author Anthony Nizac
  * @version 1.0
- *  
+ * 
  * @see bzh.gsbrh.observateurs.Lexique
  */
 public class ConnexionBDD {

@@ -1,8 +1,6 @@
 package bzh.gsbrh.modeles;
 
-import bzh.gsbrh.fabriques.FactBouton;
 import bzh.gsbrh.observateurs.Lexique;
-import bzh.gsbrh.vues.Bouton;
 
 /**
  * Class définissant l'entête du tableau de la liste des employés
@@ -18,6 +16,8 @@ public class Entete implements Lexique {
 	private String entete[] = { ID, NOM, PRENOM, LOGIN, ADR, CP, VILLE, MAIL, TEL, DATEE, SERVICE, DATED, COLMODIFIE,
 			PP_DATE_TX };
 
+	private String[] lesServices;
+	
 	/**
 	 * Constructeur de l'entête
 	 */
@@ -77,32 +77,6 @@ public class Entete implements Lexique {
 	}
 
 	/**
-	 * Ajoute des boutons aux colonnes prévu dans la liste passé en paramètre
-	 * 
-	 * @param liste
-	 *            Liste a laquel ajouter des boutons
-	 */
-	public void ajouterElements(Object[][] liste) {
-		int row = liste.length;
-		for (int i = 0; i < row; i++) {
-			for (int j = 0; j < this.entete.length; j++) {
-				if (liste[i][j] == null)
-					liste[i][j] = "";
-				if (entete[j].equals(PP_DATE_TX)) {
-					Bouton supprimer = FactBouton.fabriqueBouton(null, BO_SUPPR, Images.PROGRAM.getIcon());
-					liste[i][j] = supprimer;
-				}
-				if (entete[j].equals(COLMODIFIE)) {
-					Bouton modifier = FactBouton.fabriqueBouton(null, BO_MODIF, Images.MODIFIE.getIcon());
-					modifier.setToolTipText(BOUTON_MODIF + " " + liste[i][this.indiceDEntete(PRENOM)] + " "
-							+ liste[i][this.indiceDEntete(NOM)]);
-					liste[i][j] = modifier;
-				}
-			}
-		}
-	}
-
-	/**
 	 * Recherche si un libellé est dans le tableau des libellés
 	 * 
 	 * @param lib
@@ -115,5 +89,13 @@ public class Entete implements Lexique {
 			if (this.entete[i].equals(lib))
 				return true;
 		return false;
+	}
+
+	public String[] getLesServices() {
+		return lesServices;
+	}
+
+	public void setLesServices(String[] lesServices) {
+		this.lesServices = lesServices;
 	}
 }

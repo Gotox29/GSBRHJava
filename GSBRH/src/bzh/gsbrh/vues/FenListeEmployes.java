@@ -1,12 +1,14 @@
 package bzh.gsbrh.vues;
 
 import java.awt.Dimension;
+import java.util.ArrayList;
 
 import javax.swing.JLabel;
 import javax.swing.JTabbedPane;
 import javax.swing.SpringLayout;
 
 import bzh.gsbrh.fabriques.FactBouton;
+import bzh.gsbrh.modeles.Employe;
 import bzh.gsbrh.modeles.Entete;
 import bzh.gsbrh.modeles.Images;
 import bzh.gsbrh.observateurs.Fenetre;
@@ -87,12 +89,12 @@ public class FenListeEmployes extends Fenetre {
 	/**
 	 * Tableau des employés actifs
 	 */
-	private Object[][] listeActif;
+	private ArrayList<Employe> listeActif;
 
 	/**
 	 * Tableau des employés inactifs
 	 */
-	private Object[][] listeInactif;
+	private ArrayList<Employe> listeInactif;
 
 	/**
 	 * Entete du tableau de la liste des employés
@@ -118,11 +120,11 @@ public class FenListeEmployes extends Fenetre {
 	 * @param entete
 	 *            Entete du tableau de la liste des employés
 	 */
-	private FenListeEmployes(String titre, Observateur o, Object[][] listeA, Object[][] listeI, Entete entete) {
+	private FenListeEmployes(String titre, Observateur o, ArrayList<Employe> listeA, ArrayList<Employe> listeI, Entete entete) {
 		super(titre, o);
 		this.fermeture = 1;
-		rowActif = listeA.length;
-		rowInactif = listeI.length;
+		rowActif = listeA.size();
+		rowInactif = listeI.size();
 		listeActif = listeA;
 		listeInactif = listeI;
 		this.entete = entete;
@@ -147,7 +149,7 @@ public class FenListeEmployes extends Fenetre {
 	 *            Entete du tableau de la liste des employés
 	 * @return La fenetre liste employé
 	 */
-	public static FenListeEmployes creerFenetre(String titre, Observateur o, Object[][] listeA, Object[][] listeI,
+	public static FenListeEmployes creerFenetre(String titre, Observateur o, ArrayList<Employe> listeA, ArrayList<Employe> listeI,
 			Entete entete) {
 		if (moi == null)
 			moi = new FenListeEmployes(titre, o, listeA, listeI, entete);
@@ -171,9 +173,9 @@ public class FenListeEmployes extends Fenetre {
 	 *            Nouveau tableau des employés actifs
 	 * @see bzh.gsbrh.vues.FenListeEmployes
 	 */
-	public void actualiserListeEmpActif(Object[][] liste) {
+	public void actualiserListeEmpActif(ArrayList<Employe> liste) {
 		this.liste.actualiserListeEmploye(liste);
-		onglet1.setText(ONGLET_1 + " (" + liste.length + ")");
+		onglet1.setText(ONGLET_1 + " (" + liste.size() + ")");
 	}
 
 	/**
@@ -183,9 +185,9 @@ public class FenListeEmployes extends Fenetre {
 	 *            Nouveau tableau des employés inactifs
 	 * @see bzh.gsbrh.vues.FenListeEmployes
 	 */
-	public void actualiserListeEmpInactif(Object[][] liste) {
+	public void actualiserListeEmpInactif(ArrayList<Employe> liste) {
 		this.listeI.actualiserListeEmploye(liste);
-		onglet2.setText(ONGLET_2 + " (" + liste.length + ")");
+		onglet2.setText(ONGLET_2 + " (" + liste.size() + ")");
 	}
 	
 	/**
@@ -248,6 +250,12 @@ public class FenListeEmployes extends Fenetre {
 
 		layout.putConstraint(SpringLayout.WEST, deconnect, 15, SpringLayout.EAST, info);
 		layout.putConstraint(SpringLayout.NORTH, deconnect, 17, SpringLayout.SOUTH, info);
+	}
+	
+	public void ajouterOnglet(Object[][] liste, Entete entete, String titre) {
+		Onglet nouvelOnglet = new Onglet(this, layout, liste, entete);
+		onglet.add(nouvelOnglet.getScrollpane());
+		onglet.setTabComponentAt(onglet.getTabCount() - 1, new JLabel(titre));
 	}
 
 	public void actualiser(Observable o) {

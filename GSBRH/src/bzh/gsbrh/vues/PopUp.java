@@ -16,6 +16,7 @@ import bzh.gsbrh.fabriques.FactChamp;
 import bzh.gsbrh.fabriques.FactMessage;
 import bzh.gsbrh.modeles.Employe;
 import bzh.gsbrh.modeles.Images;
+import bzh.gsbrh.modeles.Information;
 import bzh.gsbrh.observateurs.Lexique;
 import bzh.gsbrh.observateurs.Observable;
 import bzh.gsbrh.observateurs.Observateur;
@@ -136,11 +137,11 @@ public class PopUp extends JDialog implements Observateur, Observable, Lexique {
 		deprog = FactBouton.fabriqueBouton(this, BO_REINIT, null);
 
 		String valeur;
-		if (unEmploye.getInfos(12).getValeur().equals(null) || unEmploye.getInfos(12).getValeur() == null
-				|| unEmploye.getInfos(12).getValeur().equals("")) {
+		if (unEmploye.getInfos(Information.getByType(DATED)).getValeur().equals(null) || unEmploye.getInfos(Information.getByType(DATED)).getValeur() == null
+				|| unEmploye.getInfos(Information.getByType(DATED)).getValeur().equals("")) {
 			valeur = LocalDate.now().toString();
 		} else
-			valeur = unEmploye.getInfos(12).getValeur();
+			valeur = unEmploye.getInfos(Information.getByType(DATED)).getValeur();
 		date = FactChamp.fabriqueChamp(this, DATED);
 		date.setValeur(valeur);
 		date.initialiserSaisie();
@@ -157,7 +158,7 @@ public class PopUp extends JDialog implements Observateur, Observable, Lexique {
 		deprog.setPreferredSize(dimensionBout);
 		boutons.add(valider);
 		boutons.add(annuler);
-		if (!unEmploye.getInfos(12).getValeur().equals(""))
+		if (!unEmploye.getInfos(Information.getByType(DATED)).getValeur().equals(""))
 			boutons.add(deprog);
 		contentPane.add(boutons);
 		contentPane.add(date);

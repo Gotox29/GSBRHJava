@@ -57,9 +57,8 @@ public class FactChamp implements Lexique {
 		case ADR:
 		case VILLE:
 		case MAIL:
-			return new Champ(o, text, CHAMP_TEXT, false);
 		default:
-			return null;
+			return new Champ(o, text, CHAMP_TEXT, false);
 		}
 	}
 }

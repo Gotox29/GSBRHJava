@@ -1,10 +1,12 @@
 package bzh.gsbrh.controleurs;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 import bzh.gsbrh.fabriques.FactFenetre;
 import bzh.gsbrh.fabriques.FactMessage;
 import bzh.gsbrh.modeles.Employe;
+import bzh.gsbrh.modeles.Entete;
 import bzh.gsbrh.modeles.GenerateurMDP;
 import bzh.gsbrh.modeles.GestionEmploye;
 import bzh.gsbrh.modeles.Information;
@@ -15,6 +17,7 @@ import bzh.gsbrh.observateurs.Lexique;
 import bzh.gsbrh.observateurs.Observable;
 import bzh.gsbrh.observateurs.Observateur;
 import bzh.gsbrh.vues.Champ;
+import bzh.gsbrh.vues.FenAffichEmp;
 import bzh.gsbrh.vues.FenFormulaire;
 import bzh.gsbrh.vues.FenIdentification;
 import bzh.gsbrh.vues.FenListeEmployes;
@@ -87,7 +90,8 @@ public class Controleur extends Thread implements Observateur, Lexique {
 	 * Constructeur du controleur.
 	 */
 	public Controleur() {
-		lesEmployes = GestionEmploye.gestionEmploye(Requetes.listerEmployer(), Requetes.listerServices());
+		lesEmployes = new GestionEmploye(Requetes.listerEmployer(), Requetes.listerServices());
+		
 		this.start();
 	}
 
@@ -125,10 +129,7 @@ public class Controleur extends Thread implements Observateur, Lexique {
 	 */
 	private void appliListe() {
 		unEmploye = new Employe();
-		if (fenetre != null)
-			fenetre.setVisible(false);
 		this.principale.setVisible(true);
-
 	}
 
 	/**
@@ -157,6 +158,23 @@ public class Controleur extends Thread implements Observateur, Lexique {
 		principale.setVisible(false);
 		unEmploye = lesEmployes.getEmploye(id).copie();
 		this.fenetre = FactFenetre.fabriqueFenetre(this, FE_MODIF, unEmploye);
+		fenetre.setVisible(true);
+	}
+	
+	private void appliPerso() {
+		Entete entete = new Entete();
+		String tab[] = { ID, NOM, PRENOM, LOGIN };
+		entete.setEntete(tab);
+		entete.setLesServices(Requetes.listerServices());
+		String[] select = {"id", "nom", "prenom", "login"};
+		Object[][] listeEmp = Requetes.listerTable("where timestampdiff(YEAR,dateEmbauche,CURRENT_DATE)<10", "visiteur", "1", select);
+		principale.ajouterOnglet(listeEmp, entete, "titre");
+	}
+	
+	private void appliVoir(String id) {
+		principale.setVisible(false);
+		unEmploye = lesEmployes.getEmploye(id).copie();
+		fenetre = FenAffichEmp.creerFenetre(this,unEmploye);
 		fenetre.setVisible(true);
 	}
 
@@ -231,12 +249,12 @@ public class Controleur extends Thread implements Observateur, Lexique {
 			while (!interrupted()) {
 				Thread.sleep(30000);
 				if (lUtilisateur != null) {
-					if (Requetes.ConnexionEtablie()) {
-						mettreAjour();
-						testerUtilisateur();
-					} else {
-						FactMessage.fabriqueMessage(ID_ERREUR_COBDD);
-					}
+//					if (Requetes.ConnexionEtablie()) {
+//						mettreAjour();
+//						testerUtilisateur();
+//					} else {
+//						FactMessage.fabriqueMessage(ID_ERREUR_COBDD);
+//					}
 				}
 			}
 		} catch (InterruptedException e) {
@@ -276,6 +294,7 @@ public class Controleur extends Thread implements Observateur, Lexique {
 			connexion.setVisible(false);
 		case FO_FERMETURE:
 		case FO_BA:
+			((Fenetre) o).setVisible(false);
 			appliListe();
 			break;
 		}
@@ -285,6 +304,9 @@ public class Controleur extends Thread implements Observateur, Lexique {
 		switch (code) {
 		case LI_MO: // Lancer la modification d'un employé
 			appliModif(valeur);
+			break;
+		case LI_AF: // Lancer la modification d'un employé
+			appliVoir(valeur);
 			break;
 		case LI_PR: // Programmer date depart d'un employe
 			unEmploye = lesEmployes.getEmploye(valeur).copie(); // Requetes.trouverEmploye(valeur, M_ID);
@@ -321,7 +343,7 @@ public class Controleur extends Thread implements Observateur, Lexique {
 				connexion.validerMdp(true);
 				lUtilisateur = Requetes.trouverEmploye(login, M_LOGIN);
 				if (lesEmployes == null)
-					lesEmployes = GestionEmploye.gestionEmploye(Requetes.listerEmployer(), Requetes.listerServices());
+					lesEmployes = new GestionEmploye(Requetes.listerEmployer(), Requetes.listerServices());
 				if (Integer.parseInt(lUtilisateur.getInfos(SERVICE).getValeur()) == 2
 						&& !formDate.dateDepasse(lUtilisateur.getInfos(DATED).getValeur())) {
 					this.principale = FactFenetre.fabriqueFenetre(this, FE_LISTE, lesEmployes.getListe(),
@@ -388,7 +410,6 @@ public class Controleur extends Thread implements Observateur, Lexique {
 			} else if (!lesEmployes.verif(DATED, contenu, null))
 				((PopUp) o).erreur();
 			break;
-
 		case FO_ATTRID:
 			contenu = lesEmployes.formaterId("1");
 			champ.setValeur(contenu);
@@ -430,7 +451,6 @@ public class Controleur extends Thread implements Observateur, Lexique {
 						mettreAjour();
 						employe.getInfos(i).setValeur(lesEmployes.formaterId("1"));
 						flag = true;
-
 					} else {
 						flag = false;
 						champs[i].setCouleur(false);
@@ -458,14 +478,12 @@ public class Controleur extends Thread implements Observateur, Lexique {
 					}
 					break;
 				// Ajout d'un employé
-					
 				case FO_AJOUT:
 					if (Requetes.ajouterEmploye(employe) == 1) {
 						lesEmployes.ajouterEmploye(employe);
 						principale.actualiserListeEmpActif(lesEmployes.getListe());
 						principale.actualiserListeEmpInactif(lesEmployes.getListeI());
 						fenetre.afficher(FO_MESSAGE_A, employe);
-
 					} else {
 						fenetre.afficher(FO_ERREUR_AJ, employe);
 					}

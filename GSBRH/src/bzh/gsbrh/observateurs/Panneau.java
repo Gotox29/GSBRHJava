@@ -91,6 +91,7 @@ public abstract class Panneau extends JPanel implements Observateur, Observable,
 	}
 
 	public void actualiser(Observable o, String valeur, int code) {
+
 		notifierObservateur(valeur, code);
 	}
 

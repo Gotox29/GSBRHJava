@@ -1,5 +1,7 @@
 package bzh.gsbrh.fabriques;
 
+import java.util.ArrayList;
+
 import bzh.gsbrh.modeles.Employe;
 import bzh.gsbrh.modeles.Entete;
 import bzh.gsbrh.observateurs.Lexique;
@@ -36,8 +38,8 @@ public class FactFenetre implements Lexique {
 	 * 
 	 * @see bzh.gsbrh.observateurs.Lexique
 	 */
-	public static FenListeEmployes fabriqueFenetre(Observateur o, int code, Object[][] listeA,
-			Object[][] listeI, Entete entete) {
+	public static FenListeEmployes fabriqueFenetre(Observateur o, int code, ArrayList<Employe> listeA,
+			ArrayList<Employe> listeI, Entete entete) {
 		switch (code) {
 		case FE_LISTE:
 			return FenListeEmployes.creerFenetre(FE_TITRE_LISTE, o, listeA, listeI, entete);
